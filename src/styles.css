@@ -1,0 +1,54 @@
+
+ @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+ @import 'ngx-toastr/toastr';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 9px;
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / 8%);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    height: 43px;
+}
+/* .card {
+    display: flex;
+    flex-direction: column;
+    border-radius: .5rem;
+    background-color: #fff;
+    margin: 1.25rem 0 1.25rem 0;
+    box-shadow: 0 .25rem .5rem #e6edef;
+
+    .card-head {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #edf1f7;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 1rem 1.5rem; 
+    }
+} */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

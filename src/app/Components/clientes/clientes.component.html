@@ -1,0 +1,177 @@
+<div class="container">
+    <div class="row">
+        <div id="content-wrapper" class="d-flex flex-column">
+        </div>
+        <div class="row mt-12">
+            <div class="col-lg-12" *ngIf="true">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <div class="card-body text-center">
+                            <h3>Gestion de clientes</h3>
+                            <form [formGroup]="formData" (ngSubmit)="agregarCliente()">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-address-card"
+                                                    [class.green-icon]="this.formData.get('tipoPersona')?.valid"
+                                                    [class.red-icon]="this.formData.get('tipoPersona')?.invalid && this.formData.get('tipoPersona')?.touched"></i>
+                                            </span>
+                                            <select class="form-select" aria-label="Tipo Persona"
+                                                formControlName="tipoPersona">
+                                                <option value="" selected [disabled]="true">Seleccionar...</option>
+                                                <option value="1">PERSONA NATURAL</option>
+                                                <option value="2">PERSONA JURIDICA</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-address-card"
+                                                    [class.green-icon]="this.formData.get('tipoDocumento')?.valid"
+                                                    [class.red-icon]="this.formData.get('tipoDocumento')?.invalid && this.formData.get('tipoDocumento')?.touched"></i>
+                                            </span>
+                                            <select class="form-select" aria-label="Tipo documento"
+                                                formControlName="tipoDocumento">
+                                                <option value="" selected [disabled]="true">Seleccionar...</option>
+                                                <option value="1">CEDULA</option>
+                                                <option value="2">CEDULA EXTRANGERA</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-address-card"
+                                                    [class.green-icon]="this.formData.get('documento')?.valid"
+                                                    [class.red-icon]="this.formData.get('documento')?.invalid && this.formData.get('documento')?.touched"></i>
+                                            </span>
+                                            <input formControlName="documento" type="text" class="form-control"
+                                                [maxlength]="10" placeholder="Documento">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-user"
+                                                    [class.green-icon]="this.formData.get('nombre')?.valid"
+                                                    [class.red-icon]="this.formData.get('nombre')?.invalid && this.formData.get('nombre')?.touched"></i>
+                                            </span>
+                                            <input formControlName="nombre" type="text" class="form-control"
+                                                placeholder="Nombre Completo">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-phone"
+                                                    [class.green-icon]="this.formData.get('telefono')?.valid"
+                                                    [class.red-icon]="this.formData.get('telefono')?.invalid && this.formData.get('telefono')?.touched"></i>
+                                            </span>
+                                            <input formControlName="telefono" type="text" class="form-control"
+                                                [maxlength]="15" mask="(000) 000-0000" placeholder="Celular">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-envelope"
+                                                    [class.green-icon]="this.formData.get('correo')?.valid"
+                                                    [class.red-icon]="this.formData.get('correo')?.invalid && this.formData.get('correo')?.touched"></i>
+                                            </span>
+                                            <input formControlName="correo" type="email" class="form-control"
+                                                placeholder="Correo">
+                                        </div>
+                                    </div>
+                                    <div class="grid d-grid gap-2">
+                                        <button *ngIf="!isEdit" [disabled]="this.formData.invalid" type="submit"
+                                            class="btn btn-success">
+                                            <i class="fa-solid fa-database"></i> Guardar
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </form>
+                            <div class="grid d-grid gap-2">
+                                <button *ngIf="isEdit" [disabled]="this.formData.invalid" (click)="actualizarCliente()"
+                                    class="btn btn-success">
+                                    <i class="fa-solid fa-database"></i> Actualizar
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <h3 class="mt-3">Listado de Clientes</h3>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="input-group mt-3">
+                                    <input #buscar type="text" class="form-control" placeholder="Buscar"
+                                        (input)="buscarCliente($event)" [(ngModel)]="valorInput">
+                                    <span (click)="limpiar(buscar.value)" class="search input-group-text">
+                                        <i
+                                            [ngClass]="buscar.value != '' ? 'fa-solid fa-xmark' : 'fa-solid fa-magnifying-glass'"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div class="table table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead class="thead table-dark">
+                                            <tr>
+                                                <th class="align-middle">Tipo Persona</th>
+                                                <th class="align-middle">Documento</th>
+                                                <th class="align-middle">No Documento</th>
+                                                <th class="align-middle">Nombre</th>
+                                                <th class="align-middle">Celular</th>
+                                                <th class="align-middle">Correo</th>
+                                                <th class="align-middle">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngIf="$listCliente.length <= 0">
+                                                <td colspan="7">
+                                                    No hay registros...
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let item of $listCliente">
+                                                <td>{{ item.idTipoPersona == 1 ? "Persona Natural" : "Persona Juridica"
+                                                    }}</td>
+                                                <td>{{ item.idTipoDocumento == 1 ? "CC" : "CE" }}</td>
+                                                <td>{{ item.noDocumento }}</td>
+                                                <td>{{ item.nmCliente }}</td>
+                                                <td>{{ item.telefono }}</td>
+                                                <td>{{ item.correo }}</td>
+                                                <td>
+                                                    <i (click)="setValue(item)" mat-raised-button
+                                                        matTooltip="Editar información"
+                                                        class="far fa-solid fa-pen-to-square text-primary"></i>&nbsp;
+                                                    <i (click)="eliminarCliente(item.id)" mat-raised-button
+                                                        matTooltip="Eliminar cliente"
+                                                        class="far fa-solid fa-delete-left text-danger"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

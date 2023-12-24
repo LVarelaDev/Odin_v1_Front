@@ -1,0 +1,128 @@
+<div class="container">
+    <div class="row mt-3">
+        <h3 style="text-align: center;"><strong>Gestion de propietarios</strong></h3>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="input-group">
+                <input #buscar type="text" class="form-control" placeholder="Buscar" (input)="buscarPropietario($event)"
+                    [(ngModel)]="valorInput">
+                <span (click)="limpiar(buscar.value)" class="search input-group-text">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <button (click)="activarFormulario()" class="btn btn-secondary">Nuevo</button>
+        </div>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="agregarPropietario()" *ngIf="!isSearch">
+        <div class="row">
+
+            <div class="col-md-4 mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-address-card" [class.green-icon]="this.form.get('idTipoDocumento')?.valid"
+                            [class.red-icon]="this.form.get('idTipoDocumento')?.invalid && this.form.get('idTipoDocumento')?.touched"></i>
+                    </span>
+                    <select class="form-select" aria-label="Tipo documento" formControlName="idTipoDocumento">
+                        <option value="" selected [disabled]="true">Seleccionar...</option>
+                        <option value="1">CEDULA</option>
+                        <option value="2">CEDULA EXTRANGERA</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-address-card" [class.green-icon]="this.form.get('documento')?.valid"
+                            [class.red-icon]="this.form.get('documento')?.invalid && this.form.get('documento')?.touched"></i>
+                    </span>
+                    <input formControlName="documento" type="text" class="form-control" [maxlength]="10"
+                        placeholder="Documento">
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-user" [class.green-icon]="this.form.get('nombre')?.valid"
+                            [class.red-icon]="this.form.get('nombre')?.invalid && this.form.get('nombre')?.touched"></i>
+                    </span>
+                    <input formControlName="nombre" type="text" class="form-control" placeholder="Nombre Completo">
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-phone" [class.green-icon]="this.form.get('celular')?.valid"
+                            [class.red-icon]="this.form.get('celular')?.invalid && this.form.get('celular')?.touched"></i>
+                    </span>
+                    <input formControlName="celular" type="text" class="form-control" [maxlength]="15"
+                        mask="(000) 000-0000" placeholder="Celular">
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-envelope" [class.green-icon]="this.form.get('correo')?.valid"
+                            [class.red-icon]="this.form.get('correo')?.invalid && this.form.get('correo')?.touched"></i>
+                    </span>
+                    <input formControlName="correo" type="email" class="form-control" placeholder="Correo">
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fa-solid fa-location-dot" [class.green-icon]="this.form.get('direccion')?.valid"
+                            [class.red-icon]="this.form.get('direccion')?.invalid && this.form.get('direccion')?.touched"></i>
+                    </span>
+                    <input formControlName="direccion" type="text" class="form-control" placeholder="Direccion">
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12 mb-3" style="justify-content: space-between;">
+                <button class="btn1 btn btn-primary" type="submit">Guardar</button>&nbsp;&nbsp;
+                <button class="btn btn-danger" (click)="cancel()">Cancelar</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="row" *ngIf="listPropietario.length > 0">
+        <div class="table table-responsive">
+            <table class="table table-hover table-striped">
+                <thead class="thead table-dark">
+                    <tr>
+                        <th class="align-middle">Tipo documento</th>
+                        <th class="align-middle">Documento</th>
+                        <th class="align-middle">Nombre</th>
+                        <th class="align-middle">Celular</th>
+                        <th class="align-middle">Correo</th>
+                        <th class="align-middle">Direccion</th>
+                        <th class="align-middle">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listPropietario">
+                        <td>{{ item.idTipoDocumento }}</td>
+                        <td>{{ item.documento }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td>{{ item.celular }}</td>
+                        <td>{{ item.correo }}</td>
+                        <td>{{ item.direccion }}</td>
+                        <td>
+                            <i (click)="propietarioSeleccionado(item)" mat-raised-button matTooltip="Seleccionar"
+                                class="far fa-solid fa-check fa-xl" style="color: #42cc0f;"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="wrapper fadeInDown" >
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="https://leancomponentes.com/wp-content/webpc-passthru.php?src=https://leancomponentes.com/wp-content/uploads/2022/07/tipos-de-inventarios.jpg&nocache=1" id="icon" alt="User Icon" />
+    </div>
+
+    <!-- Login Form -->
+    <form>
+      <div class="container">
+
+        <div class="pb-2">
+          <input type="text" name="Email" [(ngModel)]="UserSelected.user" class="form-control" id="exampleFormControlInput1" placeholder="Usuario">
+        </div>
+        <div lass="pb-2">
+          <input  type="password" name="password" [(ngModel)]="UserSelected.password" class="form-control"  name="login" placeholder="Contraseña">
+        </div>
+        <div>
+          <input (click)="Login()"  style="background-color: #25285A;" type="button" class="fadeIn fourth" value="Ingresar">
+        </div>
+        
+     
+      </div>
+
+      
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      V.2.0.5
+      <!-- <a class="underlineHover" href="#">Forgot Password?</a> -->
+    </div>
+
+    <div *ngIf="message" class="alert alert-dark" role="alert">
+        Usuario y/o contraseña incorrecta
+      </div>
+
+  </div>
+</div>
+
+<button (click)="downloadFile()">Descargar archivo</button>

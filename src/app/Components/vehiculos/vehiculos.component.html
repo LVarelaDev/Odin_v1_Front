@@ -1,0 +1,341 @@
+<div class="container">
+    <div class="row">
+        <div id="content-wrapper" class="d-flex flex-column">
+        </div>
+        <div class="row mt-12">
+            <div class="col-lg-12" *ngIf="true">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div class="col-4">
+                                </div>
+                                <div class="col-4">
+                                    <h3>{{ accion }} vehiculo </h3>
+                                </div>
+                                <div class="col-4">
+                                    <div class="btns">
+                                        <button mat-raised-button matTooltip="Reiniciar formulario"
+                                            (click)="ResetForm()" class="btn btn-warning">
+                                            <i class="fa-solid fa-rotate"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <form [formGroup]="form" (ngSubmit)="validarConvenio()">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-address-card"
+                                                    [class.green-icon]="this.form.get('placa')?.valid"
+                                                    [class.red-icon]="this.form.get('placa')?.invalid && this.form.get('placa')?.touched"></i>
+                                            </span>
+                                            <input formControlName="placa" type="text" class="form-control"
+                                                [maxlength]="10" placeholder="placa">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-address-card"
+                                                    [class.green-icon]="this.form.get('numeroInterno')?.valid"
+                                                    [class.red-icon]="this.form.get('numeroInterno')?.invalid && this.form.get('numeroInterno')?.touched"></i>
+                                            </span>
+                                            <input formControlName="numeroInterno" type="text" class="form-control"
+                                                [maxlength]="10" placeholder="Numero interno">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-address-card"
+                                                    [class.green-icon]="this.form.get('tipoVehiculo')?.valid"
+                                                    [class.red-icon]="this.form.get('tipoVehiculo')?.invalid && this.form.get('tipoVehiculo')?.touched"></i>
+                                            </span>
+                                            <select class="form-select" aria-label="Tipo vehiculo"
+                                                formControlName="tipoVehiculo">
+                                                <option value="" selected [disabled]="true">Seleccionar...</option>
+                                                <option value="CAMION">Camion</option>
+                                                <option value="BUS">Bus</option>
+                                                <option value="AUTOMOVIL">Automovil</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-users"
+                                                    [class.green-icon]="this.form.get('cantidadPasajeros')?.valid"
+                                                    [class.red-icon]="this.form.get('cantidadPasajeros')?.invalid && this.form.get('cantidadPasajeros')?.touched"></i>
+                                            </span>
+                                            <input formControlName="cantidadPasajeros" type="number"
+                                                class="form-control" placeholder="cantidad pasajeros">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-car"
+                                                    [class.green-icon]="this.form.get('marca')?.valid"
+                                                    [class.red-icon]="this.form.get('marca')?.invalid && this.form.get('marca')?.touched"></i>
+                                            </span>
+                                            <input formControlName="marca" type="text" class="form-control"
+                                                placeholder="Marca">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-lines-leaning"
+                                                    [class.green-icon]="this.form.get('linea')?.valid"
+                                                    [class.red-icon]="this.form.get('linea')?.invalid && this.form.get('linea')?.touched"></i>
+                                            </span>
+                                            <input formControlName="linea" type="text" class="form-control"
+                                                placeholder="Linea">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-calendar-days"
+                                                    [class.green-icon]="this.form.get('modelo')?.valid"
+                                                    [class.red-icon]="this.form.get('modelo')?.invalid && this.form.get('modelo')?.touched"></i>
+                                            </span>
+                                            <input formControlName="modelo" type="number" class="form-control"
+                                                placeholder="Modelo">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-calendar-days"
+                                                    [class.green-icon]="this.form.get('fechaMatricula')?.valid"
+                                                    [class.red-icon]="this.form.get('fechaMatricula')?.invalid && this.form.get('fechaMatricula')?.touched"></i>
+                                            </span>
+                                            <input formControlName="fechaMatricula" type="date" class="form-control"
+                                                placeholder="Fecha matricula">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-droplet"
+                                                    [class.green-icon]="this.form.get('color')?.valid"
+                                                    [class.red-icon]="this.form.get('color')?.invalid && this.form.get('color')?.touched"></i>
+                                            </span>
+                                            <input formControlName="color" type="text" class="form-control"
+                                                placeholder="Color">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-brands fa-servicestack"
+                                                    [class.green-icon]="this.form.get('servicio')?.valid"
+                                                    [class.red-icon]="this.form.get('servicio')?.invalid && this.form.get('tipoVehiculo')?.touched"></i>
+                                            </span>
+                                            <select class="form-select" aria-label="Tipo vehiculo"
+                                                formControlName="servicio">
+                                                <option value="" selected [disabled]="true">Seleccionar...</option>
+                                                <option value="PUBLICO">Publico</option>
+                                                <option value="PRIVADO">Privado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-car"
+                                                    [class.green-icon]="this.form.get('tipoCombustible')?.valid"
+                                                    [class.red-icon]="this.form.get('tipoCombustible')?.invalid && this.form.get('tipoCombustible')?.touched"></i>
+                                            </span>
+                                            <select class="form-select" aria-label="Tipo combustible"
+                                                formControlName="tipoCombustible">
+                                                <option value="" selected [disabled]="true">Seleccionar...</option>
+                                                <option value="GASOLINA">Gasolina</option>
+                                                <option value="GNV">GNV</option>
+                                                <option value="DIESEL">Diesel</option>
+                                                <option value="GAS">Gas</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-hashtag"
+                                                    [class.green-icon]="this.form.get('numeroMotor')?.valid"
+                                                    [class.red-icon]="this.form.get('numeroMotor')?.invalid && this.form.get('numeroMotor')?.touched"></i>
+                                            </span>
+                                            <input formControlName="numeroMotor" type="number" class="form-control"
+                                                placeholder="Numero de motor">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-hashtag"
+                                                    [class.green-icon]="this.form.get('numeroSerie')?.valid"
+                                                    [class.red-icon]="this.form.get('numeroSerie')?.invalid && this.form.get('numeroSerie')?.touched"></i>
+                                            </span>
+                                            <input formControlName="numeroSerie" type="number" class="form-control"
+                                                placeholder="Numero de serie">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="inputGr input-group">
+                                            <p class="mt-2" style="max-width: 90%;">{{propietario != null ?
+                                                propietario.nombre : "Seleccione un propietario"}}</p>
+                                            <i (click)="openDialogPropietario()" mat-raised-button
+                                                matTooltip="Editar información"
+                                                class="far mt-3 fa-solid fa-pen-to-square fa-xl text-prima"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-1 mb-3">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckChecked" formControlName="convenio">
+                                            <label class="form-check-label"
+                                                for="flexSwitchCheckChecked">Convenio</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3" *ngIf="this.form.get('convenio')?.value == true">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-building"
+                                                    [class.green-icon]="this.form.get('nitEmpresa')?.valid"
+                                                    [class.red-icon]="this.form.get('nitEmpresa')?.invalid && this.form.get('nitEmpresa')?.touched"></i>
+                                            </span>
+                                            <input formControlName="nitEmpresa" type="text" class="form-control"
+                                                placeholder="NIT" (blur)="blurEmpresa()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3" *ngIf="this.form.get('convenio')?.value == true">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-building"
+                                                    [class.green-icon]="this.form.get('nombreEmpresa')?.valid"
+                                                    [class.red-icon]="this.form.get('nombreEmpresa')?.invalid && this.form.get('nombreEmpresa')?.touched"></i>
+                                            </span>
+                                            <input formControlName="nombreEmpresa" type="text" class="form-control"
+                                                placeholder="Nombre">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid d-grid gap-2">
+                                        <button *ngIf="!isEdit" [disabled]="this.form.invalid" type="submit"
+                                            class="btn btn-success">
+                                            <i class="fa-solid fa-database"></i> Guardar
+                                        </button>
+                                        <button *ngIf="isEdit" [disabled]="this.form.invalid"
+                                            (click)="actualizarVehiculo()" class="btn btn-success">
+                                            <i class="fa-solid fa-database"></i> Actualizar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <h3 class="mt-3">Listado de vehiculos</h3>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="input-group mt-2">
+                                    <input #buscar type="text" class="form-control" placeholder="Buscar"
+                                        (input)="buscarConductor($event)" [(ngModel)]="valorInput">
+                                    <span (click)="limpiar(buscar.value)" class="search input-group-text">
+                                        <i
+                                            [ngClass]="buscar.value != '' ? 'fa-solid fa-xmark' : 'fa-solid fa-magnifying-glass'"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead class="thead table-dark">
+                                    <tr>
+                                        <th class="align-middle">Placa</th>
+                                        <th class="align-middle">Numero Interno</th>
+                                        <th class="align-middle">Tipo Vehiculo</th>
+                                        <th class="align-middle">N° Pasajeros</th>
+                                        <th class="align-middle">Marca</th>
+                                        <th class="align-middle">Linea</th>
+                                        <th class="align-middle">Modelo</th>
+                                        <th class="align-middle">Fecha Matricula</th>
+                                        <th class="align-middle">Color</th>
+                                        <th class="align-middle">Servicio</th>
+                                        <th class="align-middle">Tipo Combustible</th>
+                                        <th class="align-middle">N° Motor</th>
+                                        <th class="align-middle">N° Serie</th>
+                                        <th class="align-middle">Convenio</th>
+                                        <th class="align-middle">Estado</th>
+                                        <th class="align-middle">Acciones</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="$listVehiculos.length <= 0">
+                                        <td colspan="16">
+                                            No hay registros...
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let item of listVehiculos">
+                                        <td>{{ item.placa }}</td>
+                                        <td>{{ item.numeroInterno }}</td>
+                                        <td>{{ item.tipoVehiculo }}</td>
+                                        <td>{{ item.cantidadPasajeros }}</td>
+                                        <td>{{ item.marca }}</td>
+                                        <td>{{ item.linea }}</td>
+                                        <td>{{ item.modelo }}</td>
+                                        <td>{{ item.fechaMatricula | date :'dd-MM-YYYY' }}</td>
+                                        <td>{{ item.color}}</td>
+                                        <td>{{ item.servicio }}</td>
+                                        <td>{{ item.tipoCombustible }}</td>
+                                        <td>{{ item.numeroMotor }}</td>
+                                        <td>{{ item.numeroSerie }}</td>
+                                        <td>{{ item.convenio ? "SI" : "No"}}</td>
+                                        <td *ngIf="item.idEstado === 1"><span
+                                                class="badge text-bg-success">Activo</span></td>
+                                        <td *ngIf="item.idEstado === 2"><span
+                                                class="badge text-bg-danger">Inactivo</span></td>
+                                        <td *ngIf="item.idEstado === 3"><span mat-raised-button
+                                                matTooltip="Documentos Incompletos"
+                                                class="badge text-bg-warning">Incompleto</span></td>
+                                        <td>
+                                            <i (click)="setValue(item)" mat-raised-button
+                                                matTooltip="Editar información"
+                                                class="far fa-solid fa-pen-to-square text-primary"></i>&nbsp;
+                                            <i (click)="openDialogDocumentos(item.id)" mat-raised-button
+                                                matTooltip="Gestion de documentos"
+                                                class="far fa-regular fa-file text-warning"></i>&nbsp;
+                                            <i mat-raised-button matTooltip="Eliminar conductor"
+                                                class="far fa-solid fa-delete-left text-danger"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
