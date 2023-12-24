@@ -1,0 +1,53 @@
+.custom-file-upload {
+    display: flex;
+    width: 170px;
+    padding: 10px 20px;
+    background-color: #20c997; 
+    color: #fff; 
+    border-radius: 4px; 
+    cursor: pointer; 
+  }
+  
+  #fileInput {
+    display: none;
+  }
+  
+  .custom-file-upload:hover {
+    background-color: #adb5bd;
+  }
+  .styleText{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  h3{
+    font-weight: bold;
+  }
+
+  .title{
+   text-align: center; 
+   padding: 0;
+  }
+
+  .container{
+    justify-content: center;
+    width: 94%;
+  }
+  
+  .docs{
+    height: 200px;
+    width: 94%;
+    margin: auto;
+  }
+.containerModal{
+ width: 100%;
+ margin: auto;
+}
+select, option{
+  font-size: 16px;
+}
+
+.far{
+  cursor: pointer;
+}

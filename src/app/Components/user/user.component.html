@@ -1,0 +1,86 @@
+<div class="container mt-5">
+    <div class="row" style="
+    text-align: center;
+    padding-bottom: 30px;
+">
+        <h3>USUARIOS</h3>
+    </div>
+    <div class="row mt-12">
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Usuario</h5>
+                    <hr>
+                    <form >
+
+                        <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input [(ngModel)]="userSelected.user" name="user" type="text" class="form-control" placeholder="Usuario">
+                      </div>
+                      <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input [(ngModel)]="userSelected.password" name="password" type="password" class="form-control" placeholder="Contraseña">
+                      </div>
+                      <div class="input-group input-group-lg mb-3">
+                        <span class="input-group-text">
+                            <i class="fa-regular fa-person-walking-luggage"></i>
+                        </span>
+                        
+                        <select class="form-control" name="rol" [(ngModel)]="userSelected.rol" id="exampleFormControlSelect1">
+                            <option [value]="0">Seleccione</option>
+                            <option [value]="1">Administrador</option>
+                            <option [value]="2">General</option>
+                          </select>
+                      </div>
+                        <div class="d-grid gap-2">
+                            <button  (click)="UspertUser()" class="btn btn-success btn-lg">
+                                <i class="fa-solid fa-database"></i> Guardar
+                            </button>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button  (click)="Limpiar()" class="btn btn-success btn-lg">
+                                <i class="fa-solid fa-arrows-rotate"></i> Limpiar
+                            </button>
+                        </div>
+                    </form> 
+                 </div>
+            </div> 
+    </div>
+
+    
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-body text-center">
+                <h5>Listado de usuarios</h5>
+                <hr>
+                    <table class="table">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Usuario</th>
+                                <th>Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of userList" (click)="selectUser(item)">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.user }}</td>
+                                <td *ngIf="item.rol === 1"><span class="badge text-bg-secondary">Administrador</span></td>
+                                <td *ngIf="item.rol === 2"><span class="badge text-bg-info">General</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<br>
+<br>

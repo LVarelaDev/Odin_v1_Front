@@ -1,0 +1,13 @@
+.btn{
+    margin: 4px;
+}
+.green-icon{
+    color: #198754;
+}
+
+.red-icon{
+    color: #dc3545;
+}
+.far{
+    cursor: pointer;
+}

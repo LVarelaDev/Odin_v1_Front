@@ -1,0 +1,226 @@
+<div class="container">
+    <div class="row">
+        <div id="content-wrapper" class="d-flex flex-column">
+        </div>
+        <div class="row mt-12">
+            <div class="col-lg-12" *ngIf="true">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <div class="card-body text-center">
+                            <h3>Gestion de extractos</h3>
+                            <form [formGroup]="formData" (ngSubmit)="crearExtracto()">
+                                <div class="card shadow mb-4">
+                                    <div class="card-body text-center">
+                                        <div class="card-body text-center">
+                                            <div>
+                                                <h3>Gestion rutas</h3>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <mat-slide-toggle class="mt-3" color="primary"
+                                                        formControlName="idaVuelta">
+                                                        Ida y Vuelta
+                                                    </mat-slide-toggle>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="input-group">
+                                                        <mat-form-field class="municipio w-100" appearance="outline">
+                                                            <mat-label>Origen</mat-label>
+                                                            <input type="text" matInput formControlName="origen" [matAutocomplete]="autoOrigen" id="origen">
+                                                            <mat-autocomplete #autoOrigen="matAutocomplete" [displayWith]="agenciasDisplay">
+                                                                <mat-option *ngFor="let item of municipios" [value]="item">
+                                                                    {{ item.id != 0 ? item.id+' - '+item.nombre : item.nombre }}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-4">
+                                                    <div class="input-group">
+                                                        <mat-form-field class="municipio w-100" appearance="outline">
+                                                            <mat-label>Destino</mat-label>
+                                                            <input type="text" matInput formControlName="destino" [matAutocomplete]="autoDestino" id="destino">
+                                                            <mat-autocomplete #autoDestino="matAutocomplete" [displayWith]="agenciasDisplay">
+                                                                <mat-option *ngFor="let item of municipios" [value]="item">
+                                                                    {{ item.id != 0 ? item.id+' - '+item.nombre : item.nombre }}
+                                                                </mat-option>
+                                                            </mat-autocomplete>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <mat-form-field class="w-100" appearance="outline">
+                                                          <mat-label>Seleccione fecha inicio</mat-label>
+                                                          <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio">
+                                                          <mat-hint>MM/DD/YYYY</mat-hint>
+                                                          <mat-datepicker-toggle matIconSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+                                                          <mat-datepicker #pickerInicio></mat-datepicker>
+                                                        </mat-form-field>
+                                                      </div>
+                                                      
+                                                      <div class="col-md-4">
+                                                        <mat-form-field class="w-100" appearance="outline">
+                                                          <mat-label>Seleccione fecha final</mat-label>
+                                                          <input matInput [matDatepicker]="pickerFinal" formControlName="fechaFinal">
+                                                          <mat-hint>MM/DD/YYYY</mat-hint>
+                                                          <mat-datepicker-toggle matIconSuffix [for]="pickerFinal"></mat-datepicker-toggle>
+                                                          <mat-datepicker #pickerFinal></mat-datepicker>
+                                                        </mat-form-field>
+                                                      </div>
+                                                      
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <!-- <div class="input-group">
+                                            
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-address-card"
+                                                    [class.green-icon]="this.formData.get('tipoPersona')?.valid"
+                                                    [class.red-icon]="this.formData.get('tipoPersona')?.invalid && this.formData.get('tipoPersona')?.touched"></i>
+                                            </span>
+                                            <select class="form-select" aria-label="Tipo Persona"
+                                                formControlName="tipoPersona">
+                                                <option value="" selected [disabled]="true">Seleccionar...</option>
+                                                <option value="1">PERSONA NATURAL</option>
+                                                <option value="2">PERSONA JURIDICA</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-address-card"
+                                                    [class.green-icon]="this.formData.get('documento')?.valid"
+                                                    [class.red-icon]="this.formData.get('documento')?.invalid && this.formData.get('documento')?.touched"></i>
+                                            </span>
+                                            <input formControlName="documento" type="text" class="form-control"
+                                                [maxlength]="10" placeholder="Documento">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-user"
+                                                    [class.green-icon]="this.formData.get('nombre')?.valid"
+                                                    [class.red-icon]="this.formData.get('nombre')?.invalid && this.formData.get('nombre')?.touched"></i>
+                                            </span>
+                                            <input formControlName="nombre" type="text" class="form-control"
+                                                placeholder="Nombre Completo">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-phone"
+                                                    [class.green-icon]="this.formData.get('telefono')?.valid"
+                                                    [class.red-icon]="this.formData.get('telefono')?.invalid && this.formData.get('telefono')?.touched"></i>
+                                            </span>
+                                            <input formControlName="telefono" type="text" class="form-control"
+                                                [maxlength]="15" mask="(000) 000-0000" placeholder="Celular">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-envelope"
+                                                    [class.green-icon]="this.formData.get('correo')?.valid"
+                                                    [class.red-icon]="this.formData.get('correo')?.invalid && this.formData.get('correo')?.touched"></i>
+                                            </span>
+                                            <input formControlName="correo" type="email" class="form-control"
+                                                placeholder="Correo">
+                                        </div>
+                                    </div>
+                                    <div class="grid d-grid gap-2">
+                                        <button *ngIf="!isEdit" [disabled]="this.formData.invalid" type="submit"
+                                            class="btn btn-success">
+                                            <i class="fa-solid fa-database"></i> Guardar
+                                        </button>-->
+                                    </div>
+                                </div> 
+
+
+                            </form>
+                            <div class="grid d-grid gap-2">
+                                <button *ngIf="isEdit" [disabled]="this.formData.invalid" class="btn btn-success">
+                                    <i class="fa-solid fa-database"></i> Actualizar
+                                </button>
+                            </div>
+
+
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <h3 class="mt-3">Listado de extractos</h3>
+                            </div>
+                            <div class="col-md-4 mb-3">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div class="table table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead class="thead table-dark">
+                                            <tr>
+                                                <th class="align-middle">N° Contrato</th>
+                                                <th class="align-middle">Origen</th>
+                                                <th class="align-middle">Destino</th>
+                                                <th class="align-middle">Ida y vuelta</th>
+                                                <th class="align-middle">Placa</th>
+                                                <th class="align-middle">Conductor 1</th>
+                                                <th class="align-middle">Conductor 2</th>
+                                                <th class="align-middle">Fecha inicio</th>
+                                                <th class="align-middle">Fecha final</th>
+                                                <th class="align-middle">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngIf="$listExtracto.length <= 0">
+                                                <td colspan="7">
+                                                    No hay registros...
+                                                </td>
+                                            </tr>
+                                            <tr *ngFor="let item of $listExtracto">
+                                                <td>{{ item.noContrato }}</td>
+                                                <td>{{ item.nmOrigen }}</td>
+                                                <td>{{ item.nmDestino }}</td>
+                                                <td>{{ item.idaYvuelta ? "SI" : "NO" }}</td>
+                                                <td>{{ item.placa }}</td>
+                                                <td>{{ item.nmConductor1 }}</td>
+                                                <td>{{ item.nmConductor2 }}</td>
+                                                <td>{{ item.fechaInicio | date :'dd-MM-YYYY' }}</td>
+                                                <td>{{ item.fechaFinal | date :'dd-MM-YYYY' }}</td>
+                                                <td>
+                                                    <!-- <i (click)="setValue(item)" mat-raised-button
+                                                    matTooltip="Editar información"
+                                                    class="far fa-solid fa-pen-to-square text-primary"></i>&nbsp;
+                                                <i (click)="eliminarCliente(item.id)" mat-raised-button
+                                                    matTooltip="Eliminar cliente"
+                                                    class="far fa-solid fa-delete-left text-danger"></i> -->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

@@ -1,0 +1,41 @@
+
+.btn{
+    margin: 4px;
+}
+.green-icon{
+    color: #198754;
+}
+
+.red-icon{
+    color: #dc3545;
+}
+.far{
+    cursor: pointer;
+}
+.grid .btn{
+    width: 13%;
+    margin-left: 87%;
+}
+hr{
+    opacity: 10%;
+}
+.btns{
+    margin-left: 50%;
+    display: inline-block;
+}
+body:not(i){
+    font-family: 'Roboto', sans-serif;
+}
+
+h3{
+    font-weight: bold;
+}
+.table-responsive {
+    overflow-x: auto;
+}
+.search{
+    cursor: pointer;
+}
+.thead{
+    position: sticky; top: 0; z-index: 1;
+}
