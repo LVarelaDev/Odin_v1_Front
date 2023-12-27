@@ -6,6 +6,7 @@ import { LlaveValorDTO } from "../Models/LlaveValorDTO";
 import { ContratoDTO } from "../Models/ContratoDTO";
 import { ExtractoDTO } from "../Models/ExtractoDTO";
 import { MunicipioDTO } from "../Models/MunicipioDTO";
+import { ConductoresDTO } from "../Models/ConductoresDTO";
 
 @Injectable({
     providedIn: 'root'
@@ -59,5 +60,10 @@ export class ClientesService {
     getExtracto() : Observable<ExtractoDTO[]>{
         return this.http.get<ExtractoDTO[]>(`${this.MyAppUrl}${this.MyApiUrl}/getExtractos`)
     }
+
+    getConductores(): Observable<ConductoresDTO[]> {
+        const url = `${this.MyAppUrl}${this.MyApiUrl}/GetConductoresWhitOutPaginator`;
+        return this.http.get<ConductoresDTO[]>(url);
+      }
 
 }
