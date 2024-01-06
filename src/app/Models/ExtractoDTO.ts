@@ -16,4 +16,41 @@ export interface ExtractoDTO {
     fechaInicio: string;
     fechaFinal: string | null;
     fechaCreacion: string;
+    correo: string;
+    direccion: string;
+    telefono1: string;
+    telefono2:string;
+}
+
+export interface InputExtracto {
+    idOrigen: number;
+    idDestino: number;
+    idaYvuelta: boolean;
+    idContrato: number;
+    idVehiculo: number;
+    idConductor1: number;
+    idConductor2: number | null;
+    fechaInicio: Date;
+    fechaFinal: Date | null;
+    correo: string;
+    direccion: string;
+    telefono1: string;
+    telefono2:string;
+}
+
+export interface InputActualizarExtracto {
+    id: number;
+    idOrigen: number;
+    idDestino: number;
+    idaYvuelta: boolean;
+    idContrato: number;
+    idVehiculo: number;
+    idConductor1: number;
+    idConductor2: number | null;
+    fechaInicio: Date;
+    fechaFinal: Date | null;
+    correo: string;
+    direccion: string;
+    telefono1: string;
+    telefono2:string;
 }

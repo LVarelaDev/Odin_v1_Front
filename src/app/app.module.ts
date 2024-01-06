@@ -30,7 +30,7 @@ import { ExtractosComponent } from './Components/extractos/extractos.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -55,6 +55,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     ReactiveFormsModule,
     HttpClientModule,
     CommonModule,
+    MatIconModule,
     MatSlideToggleModule,
     FormsModule,
     BrowserAnimationsModule,

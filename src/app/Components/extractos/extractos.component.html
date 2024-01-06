@@ -26,24 +26,32 @@
                                                     <div class="input-group">
                                                         <mat-form-field class="municipio w-100" appearance="outline">
                                                             <mat-label>Origen</mat-label>
-                                                            <input type="text" matInput formControlName="origen" [matAutocomplete]="autoOrigen" id="origen">
-                                                            <mat-autocomplete #autoOrigen="matAutocomplete" [displayWith]="agenciasDisplay">
-                                                                <mat-option *ngFor="let item of municipios" [value]="item">
-                                                                    {{ item.id != 0 ? item.id+' - '+item.nombre : item.nombre }}
+                                                            <input type="text" matInput formControlName="origen"
+                                                                [matAutocomplete]="autoOrigen" id="origen">
+                                                            <mat-autocomplete #autoOrigen="matAutocomplete"
+                                                                [displayWith]="municipioDisplay">
+                                                                <mat-option *ngFor="let item of $municipios"
+                                                                    [value]="item">
+                                                                    {{ item.id != 0 ? item.id+' - '+item.nombre :
+                                                                    item.nombre }}
                                                                 </mat-option>
                                                             </mat-autocomplete>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="col-md-4">
                                                     <div class="input-group">
                                                         <mat-form-field class="municipio w-100" appearance="outline">
                                                             <mat-label>Destino</mat-label>
-                                                            <input type="text" matInput formControlName="destino" [matAutocomplete]="autoDestino" id="destino">
-                                                            <mat-autocomplete #autoDestino="matAutocomplete" [displayWith]="agenciasDisplay">
-                                                                <mat-option *ngFor="let item of municipios" [value]="item">
-                                                                    {{ item.id != 0 ? item.id+' - '+item.nombre : item.nombre }}
+                                                            <input type="text" matInput formControlName="destino"
+                                                                [matAutocomplete]="autoDestino" id="destino">
+                                                            <mat-autocomplete #autoDestino="matAutocomplete"
+                                                                [displayWith]="destinoDisplay">
+                                                                <mat-option *ngFor="let item of $municipiosDestinos"
+                                                                    [value]="item">
+                                                                    {{ item.id != 0 ? item.id+' - '+item.nombre :
+                                                                    item.nombre }}
                                                                 </mat-option>
                                                             </mat-autocomplete>
                                                         </mat-form-field>
@@ -52,109 +60,159 @@
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <mat-form-field class="w-100" appearance="outline">
-                                                          <mat-label>Seleccione fecha inicio</mat-label>
-                                                          <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInicio">
-                                                          <mat-hint>MM/DD/YYYY</mat-hint>
-                                                          <mat-datepicker-toggle matIconSuffix [for]="pickerInicio"></mat-datepicker-toggle>
-                                                          <mat-datepicker #pickerInicio></mat-datepicker>
+                                                            <mat-label>Seleccione fecha inicio</mat-label>
+                                                            <input matInput [matDatepicker]="pickerInicio"
+                                                                formControlName="fechaInicio">
+                                                            <mat-hint>MM/DD/YYYY</mat-hint>
+                                                            <mat-datepicker-toggle matIconSuffix
+                                                                [for]="pickerInicio"></mat-datepicker-toggle>
+                                                            <mat-datepicker #pickerInicio></mat-datepicker>
                                                         </mat-form-field>
-                                                      </div>
-                                                      
-                                                      <div class="col-md-4">
+                                                    </div>
+
+                                                    <div class="col-md-4">
                                                         <mat-form-field class="w-100" appearance="outline">
-                                                          <mat-label>Seleccione fecha final</mat-label>
-                                                          <input matInput [matDatepicker]="pickerFinal" formControlName="fechaFinal">
-                                                          <mat-hint>MM/DD/YYYY</mat-hint>
-                                                          <mat-datepicker-toggle matIconSuffix [for]="pickerFinal"></mat-datepicker-toggle>
-                                                          <mat-datepicker #pickerFinal></mat-datepicker>
+                                                            <mat-label>Seleccione fecha final</mat-label>
+                                                            <input matInput [matDatepicker]="pickerFinal"
+                                                                formControlName="fechaFinal">
+                                                            <mat-hint>MM/DD/YYYY</mat-hint>
+                                                            <mat-datepicker-toggle matIconSuffix
+                                                                [for]="pickerFinal"></mat-datepicker-toggle>
+                                                            <mat-datepicker #pickerFinal></mat-datepicker>
                                                         </mat-form-field>
-                                                      </div>
-                                                      
+                                                    </div>
+
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="input-group">
+                                                            <mat-form-field class="municipio w-100" appearance="outline">
+                                                                <mat-label>Vehiculo</mat-label>
+                                                                <input type="text" matInput formControlName="vehiculo"
+                                                                    [matAutocomplete]="autoVehiculo" id="vehiculo">
+                                                                <mat-icon matSuffix>directions_car</mat-icon>
+                                                                <mat-autocomplete #autoVehiculo="matAutocomplete"
+                                                                    [displayWith]="vehiculoDisplay">
+                                                                    <mat-option *ngFor="let item of $vehiculo" [value]="item">
+                                                                        {{ item.numeroInterno != '' ? item.numeroInterno+ ' - '
+                                                                        +item.placa :
+                                                                        item.placa }}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="input-group">
+                                                            <mat-form-field class="municipio w-100" appearance="outline">
+                                                                <mat-label>Conductor 1</mat-label>
+                                                                <input type="text" matInput formControlName="conductor"
+                                                                    [matAutocomplete]="autoConductor" id="conductor">
+                                                                <mat-icon matSuffix>person</mat-icon>
+                                                                <mat-autocomplete #autoConductor="matAutocomplete"
+                                                                    [displayWith]="conductoresDisplay">
+                                                                    <mat-option *ngFor="let item of $conductores" [value]="item">
+                                                                        {{ item.documento != '' ? item.documento+ ' - ' +item.nombre :
+                                                                        item.nombre }}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="input-group">
+                                                            <mat-form-field class="municipio w-100" appearance="outline">
+                                                                <mat-label>Conductor 2</mat-label>
+                                                                <input type="text" matInput formControlName="conductor2"
+                                                                    [matAutocomplete]="autoConductor2" id="conductor2">
+                                                                <mat-icon matSuffix>person</mat-icon>
+                                                                <mat-autocomplete #autoConductor2="matAutocomplete"
+                                                                    [displayWith]="conductoresDisplay">
+                                                                    <mat-option *ngFor="let item of $conductores2" [value]="item">
+                                                                        {{ item.documento != '' ? item.documento+ ' - ' +item.nombre :
+                                                                        item.nombre }}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="input-group">
+                                                            <mat-form-field class="municipio w-100" appearance="outline">
+                                                                <mat-label>Contrato</mat-label>
+                                                                <input type="text" matInput formControlName="contrato"
+                                                                    [matAutocomplete]="autocontrato" id="contrato">
+                                                                <mat-icon matSuffix>assignment</mat-icon>
+                                                                <mat-autocomplete #autocontrato="matAutocomplete"
+                                                                    [displayWith]="contratoDisplay">
+                                                                    <mat-option *ngFor="let item of $contrato" [value]="item">
+                                                                        {{ item.noContrato != null ? item.noContrato + ' - '
+                                                                        +item.nmCliente :
+                                                                        item.nmCliente }}
+                                                                    </mat-option>
+                                                                </mat-autocomplete>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <!-- <div class="input-group">
-                                            
-                                            <span class="input-group-text">
-                                                <i class="fa-solid fa-address-card"
-                                                    [class.green-icon]="this.formData.get('tipoPersona')?.valid"
-                                                    [class.red-icon]="this.formData.get('tipoPersona')?.invalid && this.formData.get('tipoPersona')?.touched"></i>
-                                            </span>
-                                            <select class="form-select" aria-label="Tipo Persona"
-                                                formControlName="tipoPersona">
-                                                <option value="" selected [disabled]="true">Seleccionar...</option>
-                                                <option value="1">PERSONA NATURAL</option>
-                                                <option value="2">PERSONA JURIDICA</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="col-md-4 mb-3">
+                                    
+                                    <div class="col-md-6 mb-3">
                                         <div class="input-group">
                                             <span class="input-group-text">
-                                                <i class="fa-solid fa-address-card"
-                                                    [class.green-icon]="this.formData.get('documento')?.valid"
-                                                    [class.red-icon]="this.formData.get('documento')?.invalid && this.formData.get('documento')?.touched"></i>
+                                                <i class="fa-solid fa-location-dot"
+                                                    [class.green-icon]="this.formData.get('direccion')?.valid"
+                                                    [class.red-icon]="this.formData.get('direccion')?.invalid && this.formData.get('direccion')?.touched"></i>
                                             </span>
-                                            <input formControlName="documento" type="text" class="form-control"
-                                                [maxlength]="10" placeholder="Documento">
+                                            <input formControlName="direccion" type="text" class="form-control" placeholder="Direccion">
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 mb-3">
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                <i class="fa-solid fa-user"
-                                                    [class.green-icon]="this.formData.get('nombre')?.valid"
-                                                    [class.red-icon]="this.formData.get('nombre')?.invalid && this.formData.get('nombre')?.touched"></i>
-                                            </span>
-                                            <input formControlName="nombre" type="text" class="form-control"
-                                                placeholder="Nombre Completo">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                <i class="fa-solid fa-phone"
-                                                    [class.green-icon]="this.formData.get('telefono')?.valid"
-                                                    [class.red-icon]="this.formData.get('telefono')?.invalid && this.formData.get('telefono')?.touched"></i>
-                                            </span>
-                                            <input formControlName="telefono" type="text" class="form-control"
-                                                [maxlength]="15" mask="(000) 000-0000" placeholder="Celular">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="fa-solid fa-envelope"
                                                     [class.green-icon]="this.formData.get('correo')?.valid"
                                                     [class.red-icon]="this.formData.get('correo')?.invalid && this.formData.get('correo')?.touched"></i>
                                             </span>
-                                            <input formControlName="correo" type="email" class="form-control"
-                                                placeholder="Correo">
+                                            <input formControlName="correo" type="text" class="form-control" placeholder="Correo">
                                         </div>
                                     </div>
-                                    <div class="grid d-grid gap-2">
-                                        <button *ngIf="!isEdit" [disabled]="this.formData.invalid" type="submit"
-                                            class="btn btn-success">
-                                            <i class="fa-solid fa-database"></i> Guardar
-                                        </button>-->
-                                    </div>
-                                </div> 
 
+                                    <div class="col-md-6 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-phone"
+                                                    [class.green-icon]="this.formData.get('telefono1')?.valid"
+                                                    [class.red-icon]="this.formData.get('telefono1')?.invalid && this.formData.get('telefono1')?.touched"></i>
+                                            </span>
+                                            <input formControlName="telefono1" type="text" class="form-control" placeholder="Telefono 1">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa-solid fa-phone"
+                                                    [class.green-icon]="this.formData.get('telefono2')?.valid"
+                                                    [class.red-icon]="this.formData.get('telefono2')?.invalid && this.formData.get('telefono2')?.touched"></i>
+                                            </span>
+                                            <input formControlName="telefono2" type="text" class="form-control" placeholder="Telefono 2 (opcional)">
+                                        </div>
+                                    </div>
+                                </div>
 
                             </form>
                             <div class="grid d-grid gap-2">
-                                <button *ngIf="isEdit" [disabled]="this.formData.invalid" class="btn btn-success">
+                                <button (click)="actualizarExtracto()" *ngIf="isEdit" [disabled]="this.formData.invalid" class="btn btn-success">
                                     <i class="fa-solid fa-database"></i> Actualizar
+                                </button>
+                                <button *ngIf="!isEdit" [disabled]="this.formData.invalid" class="btn btn-success"
+                                    (click)="crearExtracto()">
+                                    <i class="fa-solid fa-database"></i> Guardar
                                 </button>
                             </div>
 
@@ -191,7 +249,7 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngIf="$listExtracto.length <= 0">
-                                                <td colspan="7">
+                                                <td colspan="10">
                                                     No hay registros...
                                                 </td>
                                             </tr>
@@ -206,12 +264,9 @@
                                                 <td>{{ item.fechaInicio | date :'dd-MM-YYYY' }}</td>
                                                 <td>{{ item.fechaFinal | date :'dd-MM-YYYY' }}</td>
                                                 <td>
-                                                    <!-- <i (click)="setValue(item)" mat-raised-button
-                                                    matTooltip="Editar información"
-                                                    class="far fa-solid fa-pen-to-square text-primary"></i>&nbsp;
-                                                <i (click)="eliminarCliente(item.id)" mat-raised-button
-                                                    matTooltip="Eliminar cliente"
-                                                    class="far fa-solid fa-delete-left text-danger"></i> -->
+                                                    <i (click)="generarArchivo(item.id)" mat-raised-button
+                                                matTooltip="Generar documento FUEC"
+                                                class="far fa-regular fa-file text-warning"></i>&nbsp;
                                                 </td>
                                             </tr>
                                         </tbody>
