@@ -41,7 +41,7 @@ export class VehiculosComponent {
     private router: Router) {
     this.form = this.fb.group({
       placa: ['', [Validators.required]],
-      numeroInterno: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(6)]],
+      numeroInterno: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(1)]],
       tipoVehiculo: ['', [Validators.required]],
       cantidadPasajeros: ['', [Validators.required, Validators.pattern(this.number)]],
       marca: ['', [Validators.required]],

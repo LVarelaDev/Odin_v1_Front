@@ -22,6 +22,7 @@
                                                 <option value="" selected [disabled]="true">Seleccionar...</option>
                                                 <option value="1">PERSONA NATURAL</option>
                                                 <option value="2">PERSONA JURIDICA</option>
+                                                
                                             </select>
                                         </div>
                                     </div>
@@ -38,6 +39,7 @@
                                                 <option value="" selected [disabled]="true">Seleccionar...</option>
                                                 <option value="1">CEDULA</option>
                                                 <option value="2">CEDULA EXTRANGERA</option>
+                                                <option value="1002">NIT</option>
                                             </select>
                                         </div>
                                     </div>
@@ -50,7 +52,7 @@
                                                     [class.red-icon]="this.formData.get('documento')?.invalid && this.formData.get('documento')?.touched"></i>
                                             </span>
                                             <input formControlName="documento" type="text" class="form-control"
-                                                [maxlength]="10" placeholder="Documento">
+                                                [maxlength]="12" placeholder="Documento">
                                         </div>
                                     </div>
 

@@ -59,9 +59,10 @@
                                             <select class="form-select" aria-label="Tipo vehiculo"
                                                 formControlName="tipoVehiculo">
                                                 <option value="" selected [disabled]="true">Seleccionar...</option>
-                                                <option value="CAMION">Camion</option>
-                                                <option value="BUS">Bus</option>
-                                                <option value="AUTOMOVIL">Automovil</option>
+                                                <option value="CAMION">CAMIONETA</option>
+                                                <option value="BUS">MICROBUS</option>
+                                                <option value="AUTOMOVIL">BUSETA</option>
+                                                <option value="AUTOMOVIL">BUS</option>
                                             </select>
                                         </div>
                                     </div>
@@ -179,7 +180,7 @@
                                                     [class.green-icon]="this.form.get('numeroMotor')?.valid"
                                                     [class.red-icon]="this.form.get('numeroMotor')?.invalid && this.form.get('numeroMotor')?.touched"></i>
                                             </span>
-                                            <input formControlName="numeroMotor" type="number" class="form-control"
+                                            <input formControlName="numeroMotor" type="text" class="form-control"
                                                 placeholder="Numero de motor">
                                         </div>
                                     </div>
@@ -191,7 +192,7 @@
                                                     [class.green-icon]="this.form.get('numeroSerie')?.valid"
                                                     [class.red-icon]="this.form.get('numeroSerie')?.invalid && this.form.get('numeroSerie')?.touched"></i>
                                             </span>
-                                            <input formControlName="numeroSerie" type="number" class="form-control"
+                                            <input formControlName="numeroSerie" type="text" class="form-control"
                                                 placeholder="Numero de serie">
                                         </div>
                                     </div>

@@ -46,7 +46,7 @@ export class ProductosComponent implements OnInit {
       documento: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(6)]],
       nombre: ['', [Validators.required]],
       celular: ['', [Validators.required, Validators.pattern(this.number)]],
-      fechaNacimiento: ['', [Validators.required, this.edadMayorDe18Validator()]],
+      fechaNacimiento: ['', [Validators.required]],
       correo: ['', [Validators.required, this.validarCorreo]],
       tipoLicencia: ['', [Validators.required]],
       numeroPazYSalvo: ['', [Validators.required]],

@@ -26,7 +26,7 @@ export class ClientesComponent implements OnInit{
     this.formData = this.fb.group({
       tipoPersona: ['', [Validators.required]],
       tipoDocumento: ['', [Validators.required]],
-      documento: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(6)]],
+      documento: ['', [Validators.required, Validators.maxLength(12), Validators.minLength(6)]],
       nombre: ['', [Validators.required]],
       telefono: ['', [Validators.required]],
       correo: ['', [Validators.required, this.validarCorreo]],
