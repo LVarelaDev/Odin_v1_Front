@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, startWith } from 'rxjs';
 import { ConductoresDTO } from 'src/app/Models/ConductoresDTO';
-import { ExtractoDTO } from 'src/app/Models/ExtractoDTO';
+import { ContratoDTO } from 'src/app/Models/ContratoDTO';
+import { ExtractoDTO, InputActualizarExtracto, InputExtracto } from 'src/app/Models/ExtractoDTO';
+import { LlaveValorDTO } from 'src/app/Models/LlaveValorDTO';
 import { MunicipioDTO } from 'src/app/Models/MunicipioDTO';
+import { VehiculosDTO } from 'src/app/Models/VehiculosDTO';
 import { ClientesService } from 'src/app/Services/Clientes.service';
 
 @Component({
@@ -15,6 +17,8 @@ import { ClientesService } from 'src/app/Services/Clientes.service';
 })
 export class ExtractosComponent implements OnInit {
   formData: FormGroup;
+  idExtracto: number = 0;
+
   $listExtracto: ExtractoDTO[] = [];
   listExtracto: ExtractoDTO[] = [];
 
@@ -31,6 +35,12 @@ export class ExtractosComponent implements OnInit {
   conductores2: ConductoresDTO [] = [];
   $conductores2: ConductoresDTO [] = [];
 
+  contrato: ContratoDTO [] = [];
+  $contrato: ContratoDTO [] = [];
+
+  vehiculo: VehiculosDTO [] = [];
+  $vehiculo: VehiculosDTO [] = [];
+
   municipioSeleccionado:string = '';
 
   constructor(private fb: FormBuilder, private service: ClientesService, public dialog: MatDialog, private toastr: ToastrService) {
@@ -43,7 +53,11 @@ export class ExtractosComponent implements OnInit {
       conductor: ['',[Validators.required]],
       conductor2: [''],
       contrato: ['', [Validators.required]],
-      vehiculo: ['', [Validators.required]]
+      vehiculo: ['', [Validators.required]],
+      correo: ['',[Validators.email]],
+      direccion: ['', [Validators.required]],
+      telefono1: ['', [Validators.required]],
+      telefono2: ['']
     });
 
   }
@@ -51,84 +65,13 @@ export class ExtractosComponent implements OnInit {
     this.cargarExtracto();
     this.cargarMunicipios();
     this.cargarConductores();
+    this.cargarContrato();
+    this.cargarVehiculos();
 
     this.valueChangeInputs();
   }
 
-  valueChangeInputs(){
-    this.formData.controls['origen'].valueChanges.subscribe(value => {
-      const name = typeof value === 'string' ? value : value?.nombre;
-      this.$municipios = this._filter(name ? name : '');
-    });
-    
-    this.formData.controls['destino'].valueChanges.subscribe(value => {
-      const name = typeof value === 'string' ? value : value?.nombre;
-      this.$municipiosDestinos = this._filterDestino(name ? name : '');
-    });
-
-    this.formData.controls['conductor'].valueChanges.subscribe(value => {
-      const name = typeof value === 'string' ? value : value?.nombre;
-      this.$conductores = this._filterConductor(name ? name : '');
-    });
-
-    this.formData.controls['conductor2'].valueChanges.subscribe(value => {
-      const name = typeof value === 'string' ? value : value?.nombre;
-      this.$conductores2 = this._filterConductor2(name ? name : '');
-    });
-
-    this.formData.controls['fechaInicio'].valueChanges.subscribe( x=>{
-      console.log(x)
-    })
-
-    this.formData.controls['fechaFinal'].valueChanges.subscribe( x=>{
-      console.log(x)
-    })
-  }
-
-  private _filter(name: string): MunicipioDTO[] {
-    const filterValue = name.toLowerCase();
-
-    return this.municipios.filter(option => option.nombre.toLowerCase().includes(filterValue));
-  }
-
-  private _filterDestino(name: string): MunicipioDTO[] {
-    const filterValue = name.toLowerCase();
-
-    return this.municipiosDestinos.filter(option => option.nombre.toLowerCase().includes(filterValue));
-  }
-
-
-  private _filterConductor(name: string): ConductoresDTO[] {
-    const filterValue = name.toLowerCase();
-
-    return this.conductores.filter(option => option.nombre.toLowerCase().includes(filterValue) || option.documento.toLowerCase().includes(filterValue));
-  }
-
-  private _filterConductor2(name: string): ConductoresDTO[] {
-    const filterValue = name.toLowerCase();
-
-    return this.conductores2.filter(option => option.nombre.toLowerCase().includes(filterValue) || option.documento.toLowerCase().includes(filterValue));
-  }
-  municipioDisplay(value: MunicipioDTO): string {
-    if(value && value.nombre){
-      return value.nombre
-    }    
-    return '';
-  }
-
-  destinoDisplay(value: MunicipioDTO): string {
-    if(value && value.nombre){
-      return value.nombre
-    }    
-    return '';
-  }
-
-  conductoresDisplay(value: ConductoresDTO): string {
-    if(value && value.nombre){
-      return value.nombre
-    }    
-    return '';
-  }
+  
 
   cargarExtracto(){
     this.service.getExtracto().subscribe({
@@ -164,15 +107,247 @@ export class ExtractosComponent implements OnInit {
     })
   }
 
-  crearExtracto() {
-    console.log();
+  cargarContrato(){
+    this.service.getContratos().subscribe({
+      next : (data) => {
+        this.contrato = data;
+        this.$contrato = data;
+      }
+    })
   }
 
-  generarExtracto(){
-    console.log();
+  cargarVehiculos(){
+    this.service.getVehiculos().subscribe({
+      next : (data) => {
+        this.vehiculo = data;
+        this.$vehiculo = data;
+      }
+    })
+  }
+
+  crearExtracto() {
+    let payload: InputExtracto = {
+      idOrigen: this.formData.controls['origen'].value.id,
+      idDestino: this.formData.controls['destino'].value.id,
+      idaYvuelta: this.formData.controls['idaVuelta'].value,
+      idContrato: this.formData.controls['contrato'].value.id,
+      idVehiculo: this.formData.controls['vehiculo'].value.id,
+      idConductor1: this.formData.controls['conductor'].value.id,
+      idConductor2: this.formData.controls['conductor2'].value.id,
+      fechaInicio: new Date(this.formData.controls['fechaInicio'].value),
+      fechaFinal: new Date(this.formData.controls['fechaFinal'].value),
+      correo: this.formData.controls['correo'].value,
+      direccion: this.formData.controls['direccion'].value,
+      telefono1: this.formData.controls['telefono1'].value,
+      telefono2: this.formData.controls['telefono2'].value,
+    }
+    this.service.crearExtracto(payload).subscribe({
+      next : (value) => {
+        if(value.llave != 0){
+          this.toastr.error(value.valor)
+          return
+        }
+        this.toastr.success(value.valor);
+        this.cargarExtracto();
+      },
+    })
+  }
+
+  setValue(item: any){
+    this.idExtracto = item.id
+    const fechaInicio = new Date(item.fechaInicio);
+    const formattedFechaInicio = fechaInicio.toISOString().substring(0, 10);
+
+    const fechaFinal = new Date(item.fechaFinal != null ? item.fechaFinal : '');
+    const formattedFechaFinal = fechaFinal.toISOString().substring(0, 10);
+
+    this.formData.controls['origen'].setValue(this.municipios.find(x => x.id == item.idOrigen));
+    this.formData.controls['destino'].setValue(this.municipiosDestinos.find(x => x.id == item.idDestino));
+    this.formData.controls['idaVuelta'].setValue(item.idaYvuelta);
+    this.formData.controls['contrato'].setValue(this.contrato.find(x => x.id == item.idContrato));
+    this.formData.controls['vehiculo'].setValue(this.vehiculo.find(x => x.id == item.idVehiculo));
+    this.formData.controls['conductor'].setValue(this.conductores.find(x => x.id == item.idConductor1));
+    this.formData.controls['conductor2'].setValue(this.conductores2.find(x => x.id == item.idConductor2));
+    this.formData.controls['fechaInicio'].setValue(formattedFechaInicio);
+    this.formData.controls['fechaFinal'].setValue(formattedFechaFinal);
+    this.formData.controls['correo'].setValue(item.correo);
+    this.formData.controls['direccion'].setValue(item.direccion);
+    this.formData.controls['telefono1'].setValue(item.telefono1);
+    this.formData.controls['telefono2'].setValue(item.telefono2);
+
+
+    this.isEdit = true;
+    // this.accion = 'Actualizar';
+  }
+
+  actualizarExtracto(){
+    let payload: InputActualizarExtracto = {
+      id: this.idExtracto,
+      idOrigen: this.formData.controls['origen'].value.id,
+      idDestino: this.formData.controls['destino'].value.id,
+      idaYvuelta: this.formData.controls['idaVuelta'].value,
+      idContrato: this.formData.controls['contrato'].value.id,
+      idVehiculo: this.formData.controls['vehiculo'].value.id,
+      idConductor1: this.formData.controls['conductor'].value.id,
+      idConductor2: this.formData.controls['conductor2'].value.id,
+      fechaInicio: new Date(this.formData.controls['fechaInicio'].value),
+      fechaFinal: new Date(this.formData.controls['fechaFinal'].value),
+      correo: this.formData.controls['correo'].value,
+      direccion: this.formData.controls['direccion'].value,
+      telefono1: this.formData.controls['telefono1'].value,
+      telefono2: this.formData.controls['telefono2'].value,
+    }
+    this.service.actualizarExtracto(payload).subscribe({
+      next : (value) => {
+        if(value.llave != 0){
+          this.toastr.error(value.valor)
+          return
+        }
+        this.toastr.success(value.valor);
+        this.cargarExtracto();
+      },
+    })
+  }
+
+  generarArchivo(idExtracto: number){
+    this.service.generarArchivo(idExtracto).subscribe({
+      next: (data: LlaveValorDTO) => {
+        this.descargarArchivo(data.valor);
+      }
+    })
+  }
+
+  private descargarArchivo(pdfBase64: string) {
+    const blob = this.base64toBlob(pdfBase64, 'application/pdf');
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'FUEC.pdf';
+    link.click();
+  }
+
+  private base64toBlob(base64: string, mimeType: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+    return new Blob(byteArrays, { type: mimeType });
   }
 
   selected(e: any){
     console.log(e)
+  }
+
+
+
+  valueChangeInputs(){
+    this.formData.controls['origen'].valueChanges.subscribe(value => {
+      const name = typeof value === 'string' ? value : value?.nombre;
+      this.$municipios = this._filter(name != '' ? name : '');
+    });
+    
+    this.formData.controls['destino'].valueChanges.subscribe(value => {
+      const name = typeof value === 'string' ? value : value?.nombre;
+      this.$municipiosDestinos = this._filterDestino(name != '' ? name : '');
+    });
+
+    this.formData.controls['conductor'].valueChanges.subscribe(value => {
+      const name = typeof value === 'string' ? value : value?.nombre;
+      this.$conductores = this._filterConductor(name != '' ? name : '');
+    });
+
+    this.formData.controls['conductor2'].valueChanges.subscribe(value => {
+      const name = typeof value === 'string' ? value : value?.nombre;
+      this.$conductores2 = this._filterConductor2(name != '' ? name : '');
+    });
+
+    this.formData.controls['contrato'].valueChanges.subscribe(value => {
+      const name = typeof value.toString() === 'string' ? value.toString() : value?.nombre;
+      this.$contrato = this._filterContrato(name != '' ? name : '');
+    });
+
+    this.formData.controls['vehiculo'].valueChanges.subscribe(value => {
+      const name = typeof value === 'string' ? value : value?.nombre;
+      this.$vehiculo = this._filterVehiculo(name != '' ? name : '');
+    });
+  }
+
+  private _filter(name: string): MunicipioDTO[] {
+    const filterValue = name
+
+    return this.municipios.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  private _filterDestino(name: string): MunicipioDTO[] {
+    const filterValue = name
+
+    return this.municipiosDestinos.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+
+  private _filterConductor(name: string): ConductoresDTO[] {
+    const filterValue = name.toLowerCase();
+
+    return this.conductores.filter(option => option.nombre.toLowerCase().includes(filterValue) || option.documento.toLowerCase().includes(filterValue));
+  }
+
+  private _filterConductor2(name: string): ConductoresDTO[] {
+    const filterValue = name.toLowerCase();
+
+    return this.conductores2.filter(option => option.nombre.toLowerCase().includes(filterValue) || option.documento.toLowerCase().includes(filterValue));
+  }
+
+  private _filterContrato(name: string): ContratoDTO[] {
+    const filterValue = name
+
+    return this.contrato.filter(option => option.noContrato.toString().includes(filterValue) || option.nmCliente.includes(filterValue));
+  }
+
+  private _filterVehiculo(name: string): VehiculosDTO[] {
+    const filterValue = name;
+
+    return this.vehiculo.filter(option => option.placa.toLowerCase().includes(filterValue) || option.numeroInterno.toLowerCase().includes(filterValue));
+  }
+
+  municipioDisplay(value: MunicipioDTO): string {
+    if(value){
+      return value.nombre
+    }    
+    return '';
+  }
+
+  destinoDisplay(value: MunicipioDTO): string {
+    if(value){
+      return value.nombre
+    }    
+    return '';
+  }
+
+  conductoresDisplay(value: ConductoresDTO): string {
+    if(value){
+      return value.nombre
+    }    
+    return '';
+  }
+
+  contratoDisplay(value: ContratoDTO): string {
+    if(value){
+      return value.noContrato.toString()
+    }    
+    return '';
+  }
+
+  vehiculoDisplay(value: VehiculosDTO): string {
+    if(value){
+      return value.placa
+    }    
+    return '';
   }
 }

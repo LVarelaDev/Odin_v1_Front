@@ -4,9 +4,10 @@ import { Observable } from "rxjs";
 import { ClienteDTO } from "../Models/ClienteDTO";
 import { LlaveValorDTO } from "../Models/LlaveValorDTO";
 import { ContratoDTO } from "../Models/ContratoDTO";
-import { ExtractoDTO } from "../Models/ExtractoDTO";
+import { ExtractoDTO, InputActualizarExtracto, InputExtracto } from "../Models/ExtractoDTO";
 import { MunicipioDTO } from "../Models/MunicipioDTO";
 import { ConductoresDTO } from "../Models/ConductoresDTO";
+import { VehiculosDTO } from "../Models/VehiculosDTO";
 
 @Injectable({
     providedIn: 'root'
@@ -64,6 +65,23 @@ export class ClientesService {
     getConductores(): Observable<ConductoresDTO[]> {
         const url = `${this.MyAppUrl}${this.MyApiUrl}/GetConductoresWhitOutPaginator`;
         return this.http.get<ConductoresDTO[]>(url);
-      }
+    }
+
+    getVehiculos(): Observable<VehiculosDTO[]> {
+        const url = `${this.MyAppUrl}${this.MyApiUrl}/GetVehiculos`;
+        return this.http.get<VehiculosDTO[]>(url);
+    }
+
+    crearExtracto(payload: InputExtracto): Observable<LlaveValorDTO>{
+        return this.http.post<LlaveValorDTO>(`${this.MyAppUrl}${this.MyApiUrl}/CrearExtracto`,payload)
+    }
+
+    actualizarExtracto(payload: InputActualizarExtracto): Observable<LlaveValorDTO>{
+        return this.http.put<LlaveValorDTO>(`${this.MyAppUrl}${this.MyApiUrl}/ActualizarExtracto`,payload)
+    }
+
+    generarArchivo(idExtracto: number) : Observable<LlaveValorDTO>{
+        return this.http.get<LlaveValorDTO>(`${this.MyAppUrl}${this.MyApiUrl}/GenerarReporte?idExtracto=${idExtracto}`)
+    }
 
 }
