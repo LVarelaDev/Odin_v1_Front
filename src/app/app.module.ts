@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { ProductosComponent } from './Components/productos/productos.component';
 import { NavMenuComponent } from './Components/nav-menu/nav-menu.component';
 import { PageNotFoundComponent } from './Components/page-not-found/page-not-found.component';
-import { HttpClientModule } from '@angular/common/http'
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { LoginComponent } from './Components/login/login.component';
@@ -31,6 +31,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatIconModule} from '@angular/material/icon';
+import { AuthInterceptor } from './AuthInterceptor';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,7 @@ import {MatIconModule} from '@angular/material/icon';
     CollapseModule.forRoot(),
     
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -16,7 +16,7 @@
                 <div class="col-auto mt-2">
 
                     <select class="form-select" aria-label="Tipo documento" formControlName="tipoArchivo">
-                        <option selected [disabled]="true">Tipo de certificado</option>
+                        <option selected [value]="0" [disabled]="true">Seleccione tipo de certificado</option>
                         <option *ngFor="let item of TipoArchivos" [value]="item.id">{{item.nombre}}
                         </option>
                     </select>
@@ -37,7 +37,7 @@
                         <span *ngIf="!selectedFileName">Seleccionar archivo</span>
                         <span class="styleText" *ngIf="selectedFileName != ''">{{ selectedFileName }}</span>
                     </label>
-                    <input id="fileInput" type="file" accept=".pdf, .jpg, .jpeg, .png"
+                    <input #fileInput id="fileInput" type="file" accept=".pdf, .jpg, .jpeg, .png"
                         (change)="onFileSelected($event)">
                 </div>
 

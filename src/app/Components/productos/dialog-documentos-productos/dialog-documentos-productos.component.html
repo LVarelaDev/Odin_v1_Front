@@ -16,7 +16,7 @@
                 <div class="col-auto mt-2">
 
                     <select class="form-select" aria-label="Tipo documento" formControlName="tipoArchivo">
-                        <option selected [disabled]="true">Tipo de certificado</option>
+                        <option selected [value]="0" [disabled]="true">Seleccione tipo de certificado</option>
                         <option *ngFor="let item of TipoArchivos" [value]="item.id">{{item.nombre}}
                         </option>
                     </select>
@@ -37,13 +37,13 @@
                         <span *ngIf="!selectedFileName">Seleccionar archivo</span>
                         <span class="styleText" *ngIf="selectedFileName != ''">{{ selectedFileName }}</span>
                     </label>
-                    <input id="fileInput" type="file" accept=".pdf, .jpg, .jpeg, .png"
+                    <input #fileInput id="fileInput" type="file" accept=".pdf, .jpg, .jpeg, .png"
                         (change)="onFileSelected($event)">
                 </div>
 
                 <div class="row mt-2">
                     <div class="col-md-12">
-                        <button class="btn btn-success" type="submit"><i class="fa-solid fa-upload"></i> Importar</button>
+                        <button [disabled]="this.base64File == '' || this.formData.invalid || this.expired" class="btn btn-success" type="submit"><i class="fa-solid fa-upload" ></i> Importar</button>
                     </div>
                 </div>
 
@@ -66,11 +66,13 @@
                                         <div class="p mb-0 mr-3 font-weight-bold text-gray-800">
                                             Fecha Vencimiento: {{item.fechaVencimiento | date :'dd-MM-YYYY'}}
                                         </div>
+                                        
                                     </div>
+                                    
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i (click)="downloadFile(item.nombreArchivo)" class="far fa-solid fa-download fa-xl"></i>
+                                <i (click)="downloadFile(item.ruta)" class="far fa-solid fa-download fa-xl"></i>
                             </div>
                         </div>
                     </div>

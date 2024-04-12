@@ -1,15 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ProductoService } from 'src/app/Services/producto.service';
 import { ProductModel } from './productmodel';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Injectable, ElementRef } from '@angular/core';
-import { PaginationControlsComponent } from 'ngx-pagination';
 import * as XLSX from 'xlsx';
 import { ConductoresDTO } from 'src/app/Models/ConductoresDTO';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogDocumentosVehiculosComponent } from '../vehiculos/dialog-documentos/dialog-documentosVehiculos.component';
 import { ToastrService } from 'ngx-toastr';
 import { DialogDocumentosProductosComponent } from './dialog-documentos-productos/dialog-documentos-productos.component';
 
@@ -39,8 +35,7 @@ export class ProductosComponent implements OnInit {
   isEdit: boolean = false;
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private _productoService: ProductoService, public dialog: MatDialog,private toastr: ToastrService,
-    private router: Router) {
+  constructor(private fb: FormBuilder, private _productoService: ProductoService, public dialog: MatDialog,private toastr: ToastrService) {
     this.form = this.fb.group({
       tipoDocumento: ['', [Validators.required]],
       documento: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(6)]],
@@ -57,15 +52,15 @@ export class ProductosComponent implements OnInit {
     this.obtenerConductores();
     
   }
-
-  
-
   obtenerConductores() {
-    this._productoService.getConductores(this.p, this.itemsPerPage)
+    this._productoService.getConductores()
       .subscribe(data => {
-        this.listConductores = data.items;
+        this.listConductores = data;
         this.total = data.totalCount
-        this.$listConductores = data.items;
+        this.$listConductores = data;
+        console.log(this.listConductores)
+        console.log(this.$listConductores)
+
       });
   }
 
@@ -115,9 +110,7 @@ export class ProductosComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(x => {
-      if(x){
         this.obtenerConductores();
-      }
     })
   }
 
@@ -166,7 +159,11 @@ export class ProductosComponent implements OnInit {
 
       fechaNacimiento.setFullYear(hoy.getFullYear());
 
-      if (fechaNacimiento > hoy || edad < 18) {
+      console.log('fecha nacimiento',fechaNacimiento)
+      console.log('edad:',edad)
+
+      if (edad < 18) {
+        console.log('entramos aca')
         return { 'menorDeEdad': true };
       }
 
@@ -185,8 +182,8 @@ export class ProductosComponent implements OnInit {
   }
 
   exportToExcel() {
-    var jsonstring = JSON.stringify(this.listConductores);
-    var data = JSON.parse(jsonstring);
+    const jsonstring = JSON.stringify(this.listConductores);
+    const data = JSON.parse(jsonstring);
 
     let dataToExport = data.map((item: any) => {
       return {

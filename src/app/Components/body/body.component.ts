@@ -1,5 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+interface SideNavToggle{
+  screenWidth1: number;
+  collapsed: boolean;
+}
 @Component({
   selector: 'app-body',
   templateUrl: './body.component.html',
@@ -9,7 +13,6 @@ export class BodyComponent implements OnInit{
 
   @Input() collapsed = false;
   @Input() screenWidth = 0;
-
   ngOnInit(): void {
     // this.getBodyClass();
   }
@@ -25,5 +28,6 @@ export class BodyComponent implements OnInit{
     }
     return styleClass;
   }
+
 
 }

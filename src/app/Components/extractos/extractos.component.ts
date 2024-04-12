@@ -23,25 +23,30 @@ export class ExtractosComponent implements OnInit {
   listExtracto: ExtractoDTO[] = [];
 
   municipios: MunicipioDTO[] = [];
-  $municipios?: MunicipioDTO[] =[];
+  $municipios?: MunicipioDTO[] = [];
 
   municipiosDestinos: MunicipioDTO[] = [];
-  $municipiosDestinos?: MunicipioDTO[] =[];
+  $municipiosDestinos?: MunicipioDTO[] = [];
   isEdit: boolean = false;
 
-  conductores: ConductoresDTO [] = [];
-  $conductores: ConductoresDTO [] = [];
+  conductores: ConductoresDTO[] = [];
+  $conductores: ConductoresDTO[] = [];
 
-  conductores2: ConductoresDTO [] = [];
-  $conductores2: ConductoresDTO [] = [];
+  conductores2: ConductoresDTO[] = [];
+  $conductores2: ConductoresDTO[] = [];
 
-  contrato: ContratoDTO [] = [];
-  $contrato: ContratoDTO [] = [];
+  contrato: ContratoDTO[] = [];
+  $contrato: ContratoDTO[] = [];
 
-  vehiculo: VehiculosDTO [] = [];
-  $vehiculo: VehiculosDTO [] = [];
+  vehiculo: VehiculosDTO[] = [];
+  $vehiculo: VehiculosDTO[] = [];
 
-  municipioSeleccionado:string = '';
+  opciones = [
+    { id: 'flexRadioDefault', texto: 'SERVICIO DE TRANSPORTE TERRESTRE EMPRESARIAL' },
+    { id: 'flexRadioDefault1', texto: 'SERVICIO DE TRANSPORTE TERRESTRE DE PARTICULARES Y/O GRUPO ESPECIFICO DE PERSONAS' },
+  ];
+
+  municipioSeleccionado: string = '';
 
   constructor(private fb: FormBuilder, private service: ClientesService, public dialog: MatDialog, private toastr: ToastrService) {
     this.formData = this.fb.group({
@@ -50,14 +55,12 @@ export class ExtractosComponent implements OnInit {
       idaVuelta: [false, [Validators.required]],
       fechaInicio: [false, [Validators.required]],
       fechaFinal: [false, [Validators.required]],
-      conductor: ['',[Validators.required]],
+      conductor: ['', [Validators.required]],
       conductor2: [''],
+      conductor3: [''],
       contrato: ['', [Validators.required]],
       vehiculo: ['', [Validators.required]],
-      correo: ['',[Validators.email]],
-      direccion: ['', [Validators.required]],
-      telefono1: ['', [Validators.required]],
-      telefono2: ['']
+      observacion: ['', [Validators.required]]
     });
 
   }
@@ -69,22 +72,38 @@ export class ExtractosComponent implements OnInit {
     this.cargarVehiculos();
 
     this.valueChangeInputs();
+
+    this.formData.controls['observacion'].valueChanges.subscribe(data => {
+      console.log(data)
+    })
   }
 
-  
 
-  cargarExtracto(){
+
+  cargarExtracto() {
     this.service.getExtracto().subscribe({
-      next: (data) =>{
+      next: (data) => {
         this.$listExtracto = data;
         this.listExtracto = data;
       }
     })
   }
 
-  cargarMunicipios(){
+  onCheckboxChange(event: any, texto: string) {
+    if (event.target.checked) {
+      this.formData.controls['observacion'].setValue(texto);
+
+      const otherOptionId = (event.target.id === 'flexRadioDefault') ? 'flexRadioDefault1' : 'flexRadioDefault';
+      const otherCheckbox = document.getElementById(otherOptionId) as HTMLInputElement;
+      otherCheckbox.checked = false;
+    } else {
+      this.formData.controls['observacion'].setValue(null);
+    }
+  }
+
+  cargarMunicipios() {
     this.service.getMunicipios().subscribe({
-      next : (data) => {
+      next: (data) => {
         this.municipios = data;
         this.$municipios = data;
 
@@ -95,9 +114,9 @@ export class ExtractosComponent implements OnInit {
     })
   }
 
-  cargarConductores(){
+  cargarConductores() {
     this.service.getConductores().subscribe({
-      next : (data) => {
+      next: (data) => {
         this.conductores = data;
         this.$conductores = data;
 
@@ -107,18 +126,18 @@ export class ExtractosComponent implements OnInit {
     })
   }
 
-  cargarContrato(){
+  cargarContrato() {
     this.service.getContratos().subscribe({
-      next : (data) => {
+      next: (data) => {
         this.contrato = data;
         this.$contrato = data;
       }
     })
   }
 
-  cargarVehiculos(){
+  cargarVehiculos() {
     this.service.getVehiculos().subscribe({
-      next : (data) => {
+      next: (data) => {
         this.vehiculo = data;
         this.$vehiculo = data;
       }
@@ -134,16 +153,14 @@ export class ExtractosComponent implements OnInit {
       idVehiculo: this.formData.controls['vehiculo'].value.id,
       idConductor1: this.formData.controls['conductor'].value.id,
       idConductor2: this.formData.controls['conductor2'].value.id,
+      idConductor3: this.formData.controls['conductor3'].value.id,
       fechaInicio: new Date(this.formData.controls['fechaInicio'].value),
       fechaFinal: new Date(this.formData.controls['fechaFinal'].value),
-      correo: this.formData.controls['correo'].value,
-      direccion: this.formData.controls['direccion'].value,
-      telefono1: this.formData.controls['telefono1'].value,
-      telefono2: this.formData.controls['telefono2'].value,
+      observacion: this.formData.controls['observacion'].value,
     }
     this.service.crearExtracto(payload).subscribe({
-      next : (value) => {
-        if(value.llave != 0){
+      next: (value) => {
+        if (value.llave != 0) {
           this.toastr.error(value.valor)
           return
         }
@@ -153,7 +170,7 @@ export class ExtractosComponent implements OnInit {
     })
   }
 
-  setValue(item: any){
+  setValue(item: any) {
     this.idExtracto = item.id
     const fechaInicio = new Date(item.fechaInicio);
     const formattedFechaInicio = fechaInicio.toISOString().substring(0, 10);
@@ -168,19 +185,17 @@ export class ExtractosComponent implements OnInit {
     this.formData.controls['vehiculo'].setValue(this.vehiculo.find(x => x.id == item.idVehiculo));
     this.formData.controls['conductor'].setValue(this.conductores.find(x => x.id == item.idConductor1));
     this.formData.controls['conductor2'].setValue(this.conductores2.find(x => x.id == item.idConductor2));
+    this.formData.controls['conductor3'].setValue(this.conductores2.find(x => x.id == item.idConductor2));
     this.formData.controls['fechaInicio'].setValue(formattedFechaInicio);
     this.formData.controls['fechaFinal'].setValue(formattedFechaFinal);
-    this.formData.controls['correo'].setValue(item.correo);
-    this.formData.controls['direccion'].setValue(item.direccion);
-    this.formData.controls['telefono1'].setValue(item.telefono1);
-    this.formData.controls['telefono2'].setValue(item.telefono2);
+    this.formData.controls['observacion'].setValue(item.observacion);
 
 
     this.isEdit = true;
     // this.accion = 'Actualizar';
   }
 
-  actualizarExtracto(){
+  actualizarExtracto() {
     let payload: InputActualizarExtracto = {
       id: this.idExtracto,
       idOrigen: this.formData.controls['origen'].value.id,
@@ -190,16 +205,14 @@ export class ExtractosComponent implements OnInit {
       idVehiculo: this.formData.controls['vehiculo'].value.id,
       idConductor1: this.formData.controls['conductor'].value.id,
       idConductor2: this.formData.controls['conductor2'].value.id,
+      idConductor3: this.formData.controls['conductor3'].value.id,
       fechaInicio: new Date(this.formData.controls['fechaInicio'].value),
       fechaFinal: new Date(this.formData.controls['fechaFinal'].value),
-      correo: this.formData.controls['correo'].value,
-      direccion: this.formData.controls['direccion'].value,
-      telefono1: this.formData.controls['telefono1'].value,
-      telefono2: this.formData.controls['telefono2'].value,
+      observacion: this.formData.controls['observacion'].value
     }
     this.service.actualizarExtracto(payload).subscribe({
-      next : (value) => {
-        if(value.llave != 0){
+      next: (value) => {
+        if (value.llave != 0) {
           this.toastr.error(value.valor)
           return
         }
@@ -209,7 +222,7 @@ export class ExtractosComponent implements OnInit {
     })
   }
 
-  generarArchivo(idExtracto: number){
+  generarArchivo(idExtracto: number) {
     this.service.generarArchivo(idExtracto).subscribe({
       next: (data: LlaveValorDTO) => {
         this.descargarArchivo(data.valor);
@@ -241,18 +254,18 @@ export class ExtractosComponent implements OnInit {
     return new Blob(byteArrays, { type: mimeType });
   }
 
-  selected(e: any){
+  selected(e: any) {
     console.log(e)
   }
 
 
 
-  valueChangeInputs(){
+  valueChangeInputs() {
     this.formData.controls['origen'].valueChanges.subscribe(value => {
       const name = typeof value === 'string' ? value : value?.nombre;
       this.$municipios = this._filter(name != '' ? name : '');
     });
-    
+
     this.formData.controls['destino'].valueChanges.subscribe(value => {
       const name = typeof value === 'string' ? value : value?.nombre;
       this.$municipiosDestinos = this._filterDestino(name != '' ? name : '');
@@ -317,37 +330,37 @@ export class ExtractosComponent implements OnInit {
   }
 
   municipioDisplay(value: MunicipioDTO): string {
-    if(value){
+    if (value) {
       return value.nombre
-    }    
+    }
     return '';
   }
 
   destinoDisplay(value: MunicipioDTO): string {
-    if(value){
+    if (value) {
       return value.nombre
-    }    
+    }
     return '';
   }
 
   conductoresDisplay(value: ConductoresDTO): string {
-    if(value){
+    if (value) {
       return value.nombre
-    }    
+    }
     return '';
   }
 
   contratoDisplay(value: ContratoDTO): string {
-    if(value){
+    if (value) {
       return value.noContrato.toString()
-    }    
+    }
     return '';
   }
 
   vehiculoDisplay(value: VehiculosDTO): string {
-    if(value){
+    if (value) {
       return value.placa
-    }    
+    }
     return '';
   }
 }

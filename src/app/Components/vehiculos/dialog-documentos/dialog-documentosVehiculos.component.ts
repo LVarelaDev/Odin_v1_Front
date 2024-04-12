@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -33,6 +33,8 @@ export class DialogDocumentosVehiculosComponent implements OnInit {
 
   form: FormGroup;
 
+  @ViewChild('fileInput') myInputVariable!: ElementRef;
+
   constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<DialogDocumentosVehiculosComponent>, @Inject(MAT_DIALOG_DATA) public data: DatosDialog,
     private _productoService: ProductoService, private toastr: ToastrService,) {
 
@@ -54,12 +56,13 @@ export class DialogDocumentosVehiculosComponent implements OnInit {
   }
 
   async cargarTipoArchivo() {
-    this.TipoArchivos = await this._productoService.cargarTipoArchivoVehiculoAsync();
-    this.$TipoArchivos = await this._productoService.cargarTipoArchivoVehiculoAsync();
+    this.TipoArchivos = await this._productoService.cargarTipoArchivoVehiculoAsync(this.IdVehiculo);
+    this.$TipoArchivos = await this._productoService.cargarTipoArchivoVehiculoAsync(this.IdVehiculo);
   }
 
   async getArchivos() {
     this.archivos = await this._productoService.getArchivosVehiculos(this.IdVehiculo);
+
   }
 
   onFileSelected(event: any) {
@@ -84,18 +87,23 @@ export class DialogDocumentosVehiculosComponent implements OnInit {
   }
 
   downloadFile(fileName: string) {
-    let response : string = "";
+    let response: string = "";
     this._productoService.obtenerArchivo(fileName).subscribe({
-      next:(x:FileDTO) => {
+      next: (x: FileDTO) => {
         response = x.file
-        if(response != "" || response != null){
-          let fileNameSplit : string = fileName.split(".")[0].split("\\")[2]
-          this._productoService.descargarArchivo(response, fileNameSplit);
+        if (response != "" || response != null) {
+          this._productoService.descargarArchivo(response, fileName);
         }
-      },error: (err: any) => {
+      }, error: (err: any) => {
         this.toastr.error('Error al obtener el documento');
       },
-    })    
+    })
+  }
+
+  limpiarInputArchivo() {
+    this.myInputVariable.nativeElement.value = '';
+    this.base64File = '';
+    this.selectedFileName = '';
   }
 
   async uploadFileCheck() {
@@ -111,6 +119,9 @@ export class DialogDocumentosVehiculosComponent implements OnInit {
         this.toastr.success(data.valor)
         await this.cargarTipoArchivo();
         await this.getArchivos();
+        this.limpiarInputArchivo();
+        this.form.controls['tipoArchivo'].setValue(0);
+        this.form.controls['fechaVencimiento'].reset();
       } else {
         this.toastr.error(data.valor)
       }

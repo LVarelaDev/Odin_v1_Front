@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ProductoService } from 'src/app/Services/producto.service';
 import { navbarData } from './nav-data';
 
-interface SideNavToggle{
+interface SideNavToggle {
   screenWidth: number;
   collapsed: boolean;
 }
@@ -13,23 +13,23 @@ interface SideNavToggle{
   templateUrl: './nav-menu.component.html',
   styleUrls: ['./nav-menu.component.scss']
 })
-export class NavMenuComponent implements OnInit{
+export class NavMenuComponent implements OnInit {
 
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
   collapsed = false;
   screenWidth = 0;
   navData = navbarData;
 
-  constructor(private services: ProductoService,private router: Router) {
+  constructor(private services: ProductoService, private router: Router) {
     let rol = this.services.getRol();
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event:any){
+  onResize(event: any) {
     this.screenWidth = window.innerWidth;
-    if(this.screenWidth <= 768){
+    if (this.screenWidth <= 768) {
       this.collapsed = false;
-      this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+      this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
     }
   }
 
@@ -41,14 +41,20 @@ export class NavMenuComponent implements OnInit{
     return rol;
   }
 
-  toggleCollapse(){
+  toggleCollapse() {
     this.collapsed = !this.collapsed;
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
   }
 
-  closeSidenav(){
+  closeSidenav() {
     this.collapsed = false
-    this.onToggleSideNav.emit({collapsed: this.collapsed, screenWidth: this.screenWidth});
+    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
+  }
+
+  cerrarSesion() {
+    
+    this.router.navigate(['login']);
+    localStorage.setItem('login', 'false')
   }
 
 }

@@ -12,6 +12,7 @@ import { InputPropietario, PropietarioDTO } from '../Models/PropietarioDTO';
 })
 export class ProductoService {
 
+  // private MyAppUrl = "https://odinbackend.azurewebsites.net/";
   private MyAppUrl = "https://localhost:44390/";
   private MyApiUrl = "api"
 
@@ -19,8 +20,8 @@ export class ProductoService {
 
   constructor(private http: HttpClient) { }
 
-  getConductores(page: number, itemsPerPage: number): Observable<any> {
-    const url = `${this.MyAppUrl}${this.MyApiUrl}/GetConductores?pageNumber=${page}&pageSize=${itemsPerPage}`;
+  getConductores(): Observable<any> {
+    const url = `${this.MyAppUrl}${this.MyApiUrl}/GetConductoresWhitOutPaginator`;
     return this.http.get<any>(url);
   }
 
@@ -62,18 +63,18 @@ export class ProductoService {
     }
   }
 
-  async cargarTipoArchivoAsync(): Promise<TipoArchivo[]> {
+  async cargarTipoArchivoAsync(idConductor: number): Promise<TipoArchivo[]> {
     try {
-      const data = await this.http.get<TipoArchivo[]>(this.MyAppUrl + this.MyApiUrl + "/GetTipoArchivos").toPromise();
+      const data = await this.http.get<TipoArchivo[]>(this.MyAppUrl + this.MyApiUrl + `/GetTipoArchivos?idConductor=${idConductor}`).toPromise();
       return data!;
     } catch (error) {
       throw error;
     }
   }
 
-  async cargarTipoArchivoVehiculoAsync(): Promise<TipoArchivo[]> {
+  async cargarTipoArchivoVehiculoAsync(idvehiculo: number): Promise<TipoArchivo[]> {
     try {
-      const data = await this.http.get<TipoArchivo[]>(this.MyAppUrl + this.MyApiUrl + "/GetTipoArchivo").toPromise();
+      const data = await this.http.get<TipoArchivo[]>(this.MyAppUrl + this.MyApiUrl + `/GetTipoArchivo?idVehiculo=${idvehiculo}`).toPromise();
       return data!;
     } catch (error) {
       throw error;

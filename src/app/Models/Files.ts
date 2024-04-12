@@ -22,6 +22,7 @@ export interface Archivo{
     id: number;
     idVehiculo: number;
     idTipoArchivo: number;
+    ruta: string;
     nmTipoArchivo: string;
     nombreArchivo: string;
     fechaVencimiento: Date;

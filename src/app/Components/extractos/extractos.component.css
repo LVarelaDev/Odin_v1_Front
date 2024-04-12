@@ -3,3 +3,13 @@
 h3{
     font-weight: bold;
 }
+.formCheck{
+    display: flex;
+    justify-content: space-between;
+}
+.table-responsive {
+    overflow-x: auto;
+}
+.thead{
+    position: sticky; top: 0; z-index: 1;
+}

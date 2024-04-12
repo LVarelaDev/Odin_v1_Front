@@ -13,13 +13,12 @@ export interface ExtractoDTO {
     nmConductor1: string;
     idConductor2: number | null;
     nmConductor2: string;
+    idConductor3: number | null;
+    nmConductor3: string;
     fechaInicio: string;
     fechaFinal: string | null;
     fechaCreacion: string;
-    correo: string;
-    direccion: string;
-    telefono1: string;
-    telefono2:string;
+    observacion: string;
 }
 
 export interface InputExtracto {
@@ -30,12 +29,10 @@ export interface InputExtracto {
     idVehiculo: number;
     idConductor1: number;
     idConductor2: number | null;
+    idConductor3: number | null;
     fechaInicio: Date;
     fechaFinal: Date | null;
-    correo: string;
-    direccion: string;
-    telefono1: string;
-    telefono2:string;
+    observacion: string;
 }
 
 export interface InputActualizarExtracto {
@@ -47,10 +44,8 @@ export interface InputActualizarExtracto {
     idVehiculo: number;
     idConductor1: number;
     idConductor2: number | null;
+    idConductor3: number | null;
     fechaInicio: Date;
     fechaFinal: Date | null;
-    correo: string;
-    direccion: string;
-    telefono1: string;
-    telefono2:string;
+    observacion: string;
 }

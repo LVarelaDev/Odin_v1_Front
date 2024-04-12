@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/85996a70-6ada-4be0-b696-e7cd03f363b8/resourceGroups/ODIN/providers/Microsoft.Web/sites/OdinTransporteDeLosLlanos",
+    "appService.deploySubpath": "dist\\test-bodega"
+}
