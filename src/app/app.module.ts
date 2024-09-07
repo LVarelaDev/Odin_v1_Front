@@ -48,7 +48,7 @@ import { AuthInterceptor } from './AuthInterceptor';
     DialogDocumentosVehiculosComponent,
     ContratosComponent,
     ClientesComponent,
-    ExtractosComponent
+    ExtractosComponent,
   ],
   imports: [
     BrowserModule,

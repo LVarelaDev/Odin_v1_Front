@@ -42,6 +42,7 @@ export class VehiculosComponent {
     this.form = this.fb.group({
       placa: ['', [Validators.required]],
       numeroInterno: ['', [Validators.required, Validators.minLength(1)]],
+      tarjetaOperacion: [''],
       tipoVehiculo: ['', [Validators.required]],
       cantidadPasajeros: ['', [Validators.required, Validators.pattern(this.number)]],
       marca: ['', [Validators.required]],
@@ -134,6 +135,7 @@ export class VehiculosComponent {
       const payload: any = {
         placa: this.form.controls['placa'].value,
         numeroInterno: this.form.controls['numeroInterno'].value,
+        tarjetaOperacion: this.form.controls['tarjetaOperacion'].value,
         tipoVehiculo: this.form.controls['tipoVehiculo'].value,
         cantidadPasajeros: this.form.controls['cantidadPasajeros'].value,
         marca: this.form.controls['marca'].value,
@@ -167,6 +169,7 @@ export class VehiculosComponent {
       const payload: any = {
         placa: this.form.controls['placa'].value,
         numeroInterno: this.form.controls['numeroInterno'].value,
+        tarjetaOperacion: this.form.controls['tarjetaOperacion'].value,
         tipoVehiculo: this.form.controls['tipoVehiculo'].value,
         cantidadPasajeros: this.form.controls['cantidadPasajeros'].value,
         marca: this.form.controls['marca'].value,
@@ -231,6 +234,7 @@ export class VehiculosComponent {
 
     this.form.controls['placa'].setValue(item.placa);
     this.form.controls['numeroInterno'].setValue(item.numeroInterno);
+    this.form.controls['tarjetaOperacion'].setValue(item.tarjetaOperacion);
     this.form.controls['tipoVehiculo'].setValue(item.tipoVehiculo);
     this.form.controls['cantidadPasajeros'].setValue(item.cantidadPasajeros);
     this.form.controls['marca'].setValue(item.marca);

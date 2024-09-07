@@ -2,6 +2,7 @@ export interface VehiculosDTO {
   id: number;
   placa: string;
   numeroInterno: string;
+  tarjetaOperacion: string;
   tipoVehiculo: string;
   cantidadPasajeros: number;
   marca: string;
