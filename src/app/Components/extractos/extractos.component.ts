@@ -35,6 +35,9 @@ export class ExtractosComponent implements OnInit {
   conductores2: ConductoresDTO[] = [];
   $conductores2: ConductoresDTO[] = [];
 
+  conductores3: ConductoresDTO[] = [];
+  $conductores3: ConductoresDTO[] = [];
+
   contrato: ContratoDTO[] = [];
   $contrato: ContratoDTO[] = [];
 
@@ -146,8 +149,8 @@ export class ExtractosComponent implements OnInit {
 
   crearExtracto() {
     let payload: InputExtracto = {
-      idOrigen: this.formData.controls['origen'].value.id,
-      idDestino: this.formData.controls['destino'].value.id,
+      origen: this.formData.controls['origen'].value,
+      destino: this.formData.controls['destino'].value,
       idaYvuelta: this.formData.controls['idaVuelta'].value,
       idContrato: this.formData.controls['contrato'].value.id,
       idVehiculo: this.formData.controls['vehiculo'].value.id,
@@ -158,6 +161,7 @@ export class ExtractosComponent implements OnInit {
       fechaFinal: new Date(this.formData.controls['fechaFinal'].value),
       observacion: this.formData.controls['observacion'].value,
     }
+    console.log(payload)
     this.service.crearExtracto(payload).subscribe({
       next: (value) => {
         if (value.llave != 0) {
@@ -198,8 +202,8 @@ export class ExtractosComponent implements OnInit {
   actualizarExtracto() {
     let payload: InputActualizarExtracto = {
       id: this.idExtracto,
-      idOrigen: this.formData.controls['origen'].value.id,
-      idDestino: this.formData.controls['destino'].value.id,
+      idOrigen: this.formData.controls['origen'].value,
+      idDestino: this.formData.controls['destino'].value,
       idaYvuelta: this.formData.controls['idaVuelta'].value,
       idContrato: this.formData.controls['contrato'].value.id,
       idVehiculo: this.formData.controls['vehiculo'].value.id,
@@ -281,6 +285,11 @@ export class ExtractosComponent implements OnInit {
       this.$conductores2 = this._filterConductor2(name != '' ? name : '');
     });
 
+    this.formData.controls['conductor3'].valueChanges.subscribe(value => {
+      const name = typeof value === 'string' ? value : value?.nombre;
+      this.$conductores3 = this._filterConductor2(name != '' ? name : '');
+    });
+
     this.formData.controls['contrato'].valueChanges.subscribe(value => {
       const name = typeof value.toString() === 'string' ? value.toString() : value?.nombre;
       this.$contrato = this._filterContrato(name != '' ? name : '');
@@ -315,6 +324,12 @@ export class ExtractosComponent implements OnInit {
     const filterValue = name.toLowerCase();
 
     return this.conductores2.filter(option => option.nombre.toLowerCase().includes(filterValue) || option.documento.toLowerCase().includes(filterValue));
+  }
+
+  private _filterConductor3(name: string): ConductoresDTO[] {
+    const filterValue = name.toLowerCase();
+
+    return this.conductores3.filter(option => option.nombre.toLowerCase().includes(filterValue) || option.documento.toLowerCase().includes(filterValue));
   }
 
   private _filterContrato(name: string): ContratoDTO[] {

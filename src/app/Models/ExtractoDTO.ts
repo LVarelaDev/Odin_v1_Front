@@ -1,9 +1,7 @@
 export interface ExtractoDTO {
     id: number;
-    idOrigen: number;
-    nmOrigen: string;
-    idDestino: number;
-    nmDestino: string;
+    origen: string;
+    destino: string;
     idaYvuelta: boolean;
     idContrato: number;
     noContrato: string;
@@ -22,8 +20,8 @@ export interface ExtractoDTO {
 }
 
 export interface InputExtracto {
-    idOrigen: number;
-    idDestino: number;
+    origen: string;
+    destino: string;
     idaYvuelta: boolean;
     idContrato: number;
     idVehiculo: number;

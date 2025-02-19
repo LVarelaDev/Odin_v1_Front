@@ -6,4 +6,5 @@ export interface ClienteDTO {
     noDocumento: string;
     telefono: string;
     correo: string;
+    direccion: string;
 }

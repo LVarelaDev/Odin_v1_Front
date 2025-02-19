@@ -1,11 +1,17 @@
 import { formatDate } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { TipoArchivo } from 'src/app/Models/ConductoresDTO';
 import { Archivo, ImportFilesRequest, typeFile } from 'src/app/Models/Files';
-import { FileDTO } from 'src/app/Models/LlaveValorDTO';
+import { FileDTO, LlaveValorDTO } from 'src/app/Models/LlaveValorDTO';
 import { ProductoService } from 'src/app/Services/producto.service';
 
 export interface DatosDialog {
@@ -15,10 +21,9 @@ export interface DatosDialog {
 @Component({
   selector: 'app-dialog-documentos-productos',
   templateUrl: './dialog-documentos-productos.component.html',
-  styleUrls: ['./dialog-documentos-productos.component.css']
+  styleUrls: ['./dialog-documentos-productos.component.css'],
 })
 export class DialogDocumentosProductosComponent implements OnInit {
-
   IdConductor: number = 0;
 
   archivos: Archivo[] = [];
@@ -34,39 +39,46 @@ export class DialogDocumentosProductosComponent implements OnInit {
   typeFileSelected?: typeFile;
   $typeFile: typeFile[] = [];
 
-  formData: FormGroup;
+  today: Date = new Date();
 
+  formData: FormGroup;
   @ViewChild('fileInput') myInputVariable!: ElementRef;
 
-  constructor(private fb: FormBuilder, public dialogRef: MatDialogRef<DialogDocumentosProductosComponent>, @Inject(MAT_DIALOG_DATA) public data: DatosDialog,
-    private _productoService: ProductoService, private toastr: ToastrService,) {
-
+  constructor(
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<DialogDocumentosProductosComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DatosDialog,
+    private _productoService: ProductoService,
+    private toastr: ToastrService
+  ) {
     this.IdConductor = data.IdConductor;
 
     this.formData = this.fb.group({
       tipoArchivo: ['', [Validators.required]],
-      fechaVencimiento: ['', [Validators.required]]
+      fechaVencimiento: ['', [Validators.required]],
     });
-
   }
   async ngOnInit() {
     await this.cargarTipoArchivo();
     await this.getArchivos();
 
-    this.formData.controls['fechaVencimiento'].valueChanges.subscribe(data => {
-      this.validarFecha(data)
-    })
+    this.formData.controls['fechaVencimiento'].valueChanges.subscribe(
+      (data) => {
+        this.validarFecha(data);
+      }
+    );
   }
 
   validarFecha(data: any) {
     let date: string = formatDate(new Date(), 'yyyy-MM-dd', 'en');
     if (data <= date) {
-      this.toastr.info('La fecha de vencimiento no debe ser menor o igual a la actual')
+      this.toastr.info(
+        'La fecha de vencimiento no debe ser menor o igual a la actual'
+      );
       this.expired = true;
     } else {
-      this.expired = false
+      this.expired = false;
     }
-
   }
 
   limpiarInputArchivo() {
@@ -76,14 +88,18 @@ export class DialogDocumentosProductosComponent implements OnInit {
   }
 
   async cargarTipoArchivo() {
-    this.TipoArchivos = await this._productoService.cargarTipoArchivoAsync(this.IdConductor);
-    this.$TipoArchivos = await this._productoService.cargarTipoArchivoAsync(this.IdConductor);
-    console.log(this.TipoArchivos)
+    this.TipoArchivos = await this._productoService.cargarTipoArchivoAsync(
+      this.IdConductor
+    );
+    this.$TipoArchivos = await this._productoService.cargarTipoArchivoAsync(
+      this.IdConductor
+    );
+    console.log(this.TipoArchivos);
   }
 
   async getArchivos() {
     this.archivos = await this._productoService.getArchivos(this.IdConductor);
-    console.log(this.archivos)
+    console.log(this.archivos);
   }
 
   onFileSelected(event: any) {
@@ -93,7 +109,6 @@ export class DialogDocumentosProductosComponent implements OnInit {
 
       const file = event.target.files[0];
       if (file) {
-
         const reader = new FileReader();
         reader.onload = (e: any) => {
           this.base64File = e.target.result.split(',')[1];
@@ -104,17 +119,18 @@ export class DialogDocumentosProductosComponent implements OnInit {
   }
 
   downloadFile(fileName: string) {
-    let response: string = "";
+    let response: string = '';
     this._productoService.obtenerArchivo(fileName).subscribe({
       next: (x: FileDTO) => {
-        response = x.file
-        if (response != "" || response != null) {
+        response = x.file;
+        if (response != '' || response != null) {
           this._productoService.descargarArchivo(response, fileName);
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
         this.toastr.error('Error al obtener el documento');
       },
-    })
+    });
   }
 
   async uploadFileCheck() {
@@ -123,28 +139,46 @@ export class DialogDocumentosProductosComponent implements OnInit {
         IdConductor: this.IdConductor,
         IdTipoArchivo: Number(this.formData.controls['tipoArchivo'].value),
         Archivo: this.base64File,
-        FechaVencimiento: this.formData.controls['fechaVencimiento'].value
-      }
+        FechaVencimiento: this.formData.controls['fechaVencimiento'].value,
+      };
       const data = await this._productoService.ImportarArchivo(payload);
       if (data.llave == 0) {
-        this.toastr.success(data.valor)
+        this.toastr.success(data.valor);
         await this.cargarTipoArchivo();
         await this.getArchivos();
         this.limpiarInputArchivo();
         this.formData.controls['tipoArchivo'].setValue(0);
         this.formData.controls['fechaVencimiento'].reset();
       } else {
-        this.toastr.error(data.valor)
+        this.toastr.error(data.valor);
       }
-    }
-    else if (this.base64File == '') {
-      this.toastr.error('Debes seleccionar un archivo.')
+    } else if (this.base64File == '') {
+      this.toastr.error('Debes seleccionar un archivo.');
     }
   }
 
   uploadfile() {
     this.uploadFileCheck();
   }
+
+  deleteFile(id:number){
+    this._productoService.eliminarArchivoVechiculo(id).subscribe({
+      next: (x: LlaveValorDTO) => {
+        if (x.llave == 0) {
+          this.getArchivos();
+          this.cargarTipoArchivo();
+          this.toastr.success(x.valor)
+        }else{
+          this.toastr.error(x.valor)
+        }
+      }, error: (err: any) => {
+        this.toastr.error('Error al obtener el documento');
+      },
+    })
+  }
+
+  isExpired(fechaVencimiento: string): boolean {
+    const vencimientoDate = new Date(fechaVencimiento); // Convertir el string a un objeto Date
+    return vencimientoDate < this.today; // Comparar con la fecha actual
+  }
 }
-
-

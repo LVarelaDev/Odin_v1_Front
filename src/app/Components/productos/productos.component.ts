@@ -1,5 +1,12 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  ValidatorFn,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { ProductoService } from 'src/app/Services/producto.service';
 import { ProductModel } from './productmodel';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -8,14 +15,14 @@ import { ConductoresDTO } from 'src/app/Models/ConductoresDTO';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { DialogDocumentosProductosComponent } from './dialog-documentos-productos/dialog-documentos-productos.component';
+import { LlaveValorDTO } from 'src/app/Models/LlaveValorDTO';
 
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
-  styleUrls: ['./productos.component.css']
+  styleUrls: ['./productos.component.css'],
 })
 export class ProductosComponent implements OnInit {
-
   number = '^[0-9]+$';
 
   listConductores: ConductoresDTO[] = [];
@@ -23,45 +30,58 @@ export class ProductosComponent implements OnInit {
   listProductosOptimos: any[] = [];
   listProductosDefectuosos: any[] = [];
 
-  total:number = 0;
+  total: number = 0;
 
-  $report: BehaviorSubject<ProductModel[]> = new BehaviorSubject<ProductModel[]>([]);
+  $report: BehaviorSubject<ProductModel[]> = new BehaviorSubject<
+    ProductModel[]
+  >([]);
 
   p: number = 1;
-  itemsPerPage: number = 5; 
+  itemsPerPage: number = 5;
 
   valorInput = '';
-  accion = "Agregar";
+  accion = 'Agregar';
   isEdit: boolean = false;
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private _productoService: ProductoService, public dialog: MatDialog,private toastr: ToastrService) {
+  constructor(
+    private fb: FormBuilder,
+    private _productoService: ProductoService,
+    public dialog: MatDialog,
+    private toastr: ToastrService
+  ) {
     this.form = this.fb.group({
       tipoDocumento: ['', [Validators.required]],
-      documento: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(6)]],
+      documento: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(6),
+        ],
+      ],
       nombre: ['', [Validators.required]],
       celular: ['', [Validators.required, Validators.pattern(this.number)]],
-      fechaNacimiento: ['', [Validators.required, this.edadMayorDe18Validator()]],
+      fechaNacimiento: [
+        '',
+        [Validators.required, this.edadMayorDe18Validator()],
+      ],
       correo: ['', [Validators.required, this.validarCorreo]],
       tipoLicencia: ['', [Validators.required]],
       numeroPazYSalvo: ['', [Validators.required]],
     });
-
   }
   ngOnInit(): void {
     this.obtenerConductores();
-    
   }
   obtenerConductores() {
-    this._productoService.getConductores()
-      .subscribe(data => {
-        this.listConductores = data;
-        this.total = data.totalCount
-        this.$listConductores = data;
-        console.log(this.listConductores)
-        console.log(this.$listConductores)
-
-      });
+    this._productoService.getConductores().subscribe((data) => {
+      this.listConductores = data;
+      this.total = data.totalCount;
+      this.$listConductores = data;
+      console.log(this.listConductores);
+      console.log(this.$listConductores);
+    });
   }
 
   agregarConductor() {
@@ -73,50 +93,55 @@ export class ProductosComponent implements OnInit {
       FechaNacimiento: new Date(this.form.controls['fechaNacimiento'].value),
       Correo: this.form.controls['correo'].value,
       TipoLicencia: this.form.controls['tipoLicencia'].value,
-      NumeroPazYSalvo: this.form.controls['numeroPazYSalvo'].value
-    }
+      NumeroPazYSalvo: this.form.controls['numeroPazYSalvo'].value,
+    };
     if (!this.isEdit) {
-      this._productoService.guardarConductor(payload).subscribe(data => {
-        if (data.llave == 0) {
-          this.toastr.success(data.valor);
-          this.obtenerConductores();
-          this.form.reset();
-        } else {
-          this.toastr.success(data.valor);
-        }
-
-      }, error => {
-      })
+      this._productoService.guardarConductor(payload).subscribe(
+        (data) => {
+          if (data.llave == 0) {
+            this.toastr.success(data.valor);
+            this.obtenerConductores();
+            this.form.reset();
+          } else {
+            this.toastr.success(data.valor);
+          }
+        },
+        (error) => {}
+      );
     } else {
-      this._productoService.actualizarConductor(payload).subscribe(data => {
-        if (data.llave == 0) {
-          this.toastr.success(data.valor);
-          this.obtenerConductores();
-          this.ResetForm();
-        } else {
-          this.toastr.error(data.valor);
-        }
-      }, error => {
-      })
+      this._productoService.actualizarConductor(payload).subscribe(
+        (data) => {
+          if (data.llave == 0) {
+            this.toastr.success(data.valor);
+            this.obtenerConductores();
+            this.ResetForm();
+          } else {
+            this.toastr.error(data.valor);
+          }
+        },
+        (error) => {}
+      );
     }
   }
 
-  openDialogDocumentos(id: number){
-    const dialogRef = this.dialog.open(DialogDocumentosProductosComponent,{
+  openDialogDocumentos(id: number) {
+    const dialogRef = this.dialog.open(DialogDocumentosProductosComponent, {
       width: '60%',
       data: {
-        IdConductor: id
-      }
+        IdConductor: id,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(x => {
-        this.obtenerConductores();
-    })
+    dialogRef.afterClosed().subscribe((x) => {
+      this.obtenerConductores();
+    });
   }
 
   setValue(item: ConductoresDTO) {
     const fechaNacimiento = new Date(item.fechaNacimiento);
-    const formattedFechaNacimiento = fechaNacimiento.toISOString().substring(0, 10);
+    const formattedFechaNacimiento = fechaNacimiento
+      .toISOString()
+      .substring(0, 10);
 
     this.form.controls['tipoDocumento'].setValue(item.idTipoDocumento);
     this.form.controls['documento'].setValue(item.documento);
@@ -129,24 +154,25 @@ export class ProductosComponent implements OnInit {
 
     this.isEdit = true;
     this.accion = 'Actualizar';
-
   }
 
-  buscarConductor(event: any){
-
+  buscarConductor(event: any) {
     const filtro = event.target.value.toLowerCase();
-    this.$listConductores = this.listConductores.filter(x => x.documento.toLowerCase().includes(filtro) || x.nombre.toLowerCase().includes(filtro)
+    this.$listConductores = this.listConductores.filter(
+      (x) =>
+        x.documento.toLowerCase().includes(filtro) ||
+        x.nombre.toLowerCase().includes(filtro)
     );
   }
 
-  limpiar(e: any){
+  limpiar(e: any) {
     this.valorInput = '';
-    this.$listConductores = this.listConductores
+    this.$listConductores = this.listConductores;
   }
 
-  ResetForm(){
+  ResetForm() {
     this.isEdit = false;
-    this.accion = 'Agregar'
+    this.accion = 'Agregar';
 
     this.form.reset();
   }
@@ -159,12 +185,12 @@ export class ProductosComponent implements OnInit {
 
       fechaNacimiento.setFullYear(hoy.getFullYear());
 
-      console.log('fecha nacimiento',fechaNacimiento)
-      console.log('edad:',edad)
+      console.log('fecha nacimiento', fechaNacimiento);
+      console.log('edad:', edad);
 
       if (edad < 18) {
-        console.log('entramos aca')
-        return { 'menorDeEdad': true };
+        console.log('entramos aca');
+        return { menorDeEdad: true };
       }
 
       return null;
@@ -187,16 +213,15 @@ export class ProductosComponent implements OnInit {
 
     let dataToExport = data.map((item: any) => {
       return {
-        'CódigoProducto': item.codigoProducto,
-        'NombreProducto': item.nombre,
-        'Stock': item.stock,
-        'Estado': item.estado,
-        'FechaRegistro': item.fechaRegistro
+        CódigoProducto: item.codigoProducto,
+        NombreProducto: item.nombre,
+        Stock: item.stock,
+        Estado: item.estado,
+        FechaRegistro: item.fechaRegistro,
       };
     });
     this.exportJsonToExcel(dataToExport, 'Prodcutos');
   }
-
 
   public exportTableElmToExcel(element: ElementRef, fileName: string): void {
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element.nativeElement);
@@ -212,5 +237,19 @@ export class ProductosComponent implements OnInit {
     XLSX.writeFile(workbook, `${fileName}.xlsx`);
   }
 
-
+  deleteDriver(id: number) {
+    this._productoService.deleteDriver(id).subscribe({
+      next: (x: LlaveValorDTO) => {
+        if (x.llave == 0) {
+          this.obtenerConductores();
+          this.toastr.success(x.valor);
+        } else {
+          this.toastr.error(x.valor);
+        }
+      },
+      error: (err: any) => {
+        this.toastr.error('Error al obtener el documento');
+      },
+    });
+  }
 }

@@ -8,12 +8,11 @@ import { ClientesService } from 'src/app/Services/Clientes.service';
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
-  styleUrls: ['./clientes.component.css']
+  styleUrls: ['./clientes.component.css'],
 })
-export class ClientesComponent implements OnInit{
-
+export class ClientesComponent implements OnInit {
   isEdit: boolean = false;
-  accion: string = "accion";
+  accion: string = 'accion';
   listCliente: ClienteDTO[] = [];
   $listCliente: ClienteDTO[] = [];
 
@@ -21,33 +20,45 @@ export class ClientesComponent implements OnInit{
 
   formData: FormGroup;
   idCliente: number = 0;
-  
-  constructor(private fb: FormBuilder, private service: ClientesService, public dialog: MatDialog,private toastr: ToastrService) {
+
+  constructor(
+    private fb: FormBuilder,
+    private service: ClientesService,
+    public dialog: MatDialog,
+    private toastr: ToastrService
+  ) {
     this.formData = this.fb.group({
       tipoPersona: ['', [Validators.required]],
       tipoDocumento: ['', [Validators.required]],
-      documento: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(6)]],
+      documento: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(6),
+        ],
+      ],
       nombre: ['', [Validators.required]],
       telefono: ['', [Validators.required]],
       correo: ['', [Validators.required, this.validarCorreo]],
+      direccion: ['', [Validators.required]],
     });
-
   }
 
   ngOnInit(): void {
     this.cargarClientes();
   }
 
-  cargarClientes(){
+  cargarClientes() {
     this.service.getclientes().subscribe({
-      next:(data) => {
+      next: (data) => {
         this.listCliente = data;
-        this.$listCliente= data;
-      }
-    })
+        this.$listCliente = data;
+      },
+    });
   }
 
-  agregarCliente(){
+  agregarCliente() {
     const payload = {
       idTipoPersona: this.formData.controls['tipoPersona'].value,
       nmCliente: this.formData.controls['nombre'].value,
@@ -55,50 +66,56 @@ export class ClientesComponent implements OnInit{
       noDocumento: this.formData.controls['documento'].value,
       telefono: this.formData.controls['telefono'].value,
       correo: this.formData.controls['correo'].value,
-    }
+      direccion: this.formData.controls['direccion'].value,
+    };
 
     this.service.guardarCliente(payload).subscribe({
-      next : (data) =>{
-        if(data.llave == 0){
+      next: (data) => {
+        if (data.llave == 0) {
           this.toastr.success(data.valor);
           this.cargarClientes();
-        }else{
+        } else {
           this.toastr.warning(data.valor);
         }
-      },error(err) {
-        console.log(err)
       },
-    })
+      error(err) {
+        console.log(err);
+      },
+    });
   }
 
   setValue(item: ClienteDTO) {
     this.idCliente = item.id;
-    this.formData.controls['tipoPersona'].setValue(item.idTipoPersona.toString());
+    this.formData.controls['tipoPersona'].setValue(
+      item.idTipoPersona.toString()
+    );
     this.formData.controls['nombre'].setValue(item.nmCliente);
-    this.formData.controls['tipoDocumento'].setValue(item.idTipoDocumento.toString());
+    this.formData.controls['tipoDocumento'].setValue(
+      item.idTipoDocumento.toString()
+    );
     this.formData.controls['documento'].setValue(item.noDocumento);
     this.formData.controls['telefono'].setValue(item.telefono);
     this.formData.controls['correo'].setValue(item.correo);
+    this.formData.controls['direccion'].setValue(item.direccion);
 
     this.isEdit = true;
     this.accion = 'Actualizar';
-
   }
 
-  eliminarCliente(id: number){
+  eliminarCliente(id: number) {
     this.service.eliminarCliente(id).subscribe({
-      next : (data) => {
-        if(data.llave == 0){
+      next: (data) => {
+        if (data.llave == 0) {
           this.toastr.success(data.valor);
           this.cargarClientes();
-        }else{
+        } else {
           this.toastr.error(data.valor);
         }
-      }
-    })
+      },
+    });
   }
 
-  actualizarCliente(){
+  actualizarCliente() {
     const payload = {
       id: this.idCliente,
       idTipoPersona: this.formData.controls['tipoPersona'].value,
@@ -107,37 +124,42 @@ export class ClientesComponent implements OnInit{
       noDocumento: this.formData.controls['documento'].value,
       telefono: this.formData.controls['telefono'].value,
       correo: this.formData.controls['correo'].value,
-    }
+      direccion: this.formData.controls['direccion'].value,
+    };
 
     this.service.actualizarCliente(payload).subscribe({
-      next : (value) => {
-        if(value.llave == 0){
+      next: (value) => {
+        if (value.llave == 0) {
           this.ResetForm();
           this.cargarClientes();
           this.toastr.success(value.valor);
-        }else{
+        } else {
           this.toastr.warning(value.valor);
         }
-      },error(err) {
+      },
+      error(err) {
         console.log(err);
       },
-    })
+    });
   }
 
-  buscarCliente(event: any){
+  buscarCliente(event: any) {
     const filtro = event.target.value.toLowerCase();
-    this.$listCliente = this.listCliente.filter(x => x.noDocumento.toLowerCase().includes(filtro) || x.nmCliente.toLowerCase().includes(filtro)
+    this.$listCliente = this.listCliente.filter(
+      (x) =>
+        x.noDocumento.toLowerCase().includes(filtro) ||
+        x.nmCliente.toLowerCase().includes(filtro)
     );
   }
 
-  limpiar(e: any){
+  limpiar(e: any) {
     this.valorInput = '';
-    this.$listCliente = this.listCliente
+    this.$listCliente = this.listCliente;
   }
 
-  ResetForm(){
+  ResetForm() {
     this.isEdit = false;
-    this.accion = 'Agregar'
+    this.accion = 'Agregar';
 
     this.formData.reset();
   }

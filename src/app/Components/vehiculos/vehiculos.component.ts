@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { DialogDocumentosVehiculosComponent } from './dialog-documentos/dialog-documentosVehiculos.component';
 import { DialogPropietarioComponent } from './dialog-propietario/dialog-propietario.component';
 import { PropietarioDTO } from 'src/app/Models/PropietarioDTO';
+import { LlaveValorDTO } from 'src/app/Models/LlaveValorDTO';
 
 @Component({
   selector: 'app-vehiculos',
@@ -316,6 +317,22 @@ export class VehiculosComponent {
     } else {
       return { correoInvalido: true };
     }
+  }
+
+  deleteDriver(id:number){
+    this._service.deleteVehicle(id).subscribe({
+      next: (x: LlaveValorDTO) => {
+        if (x.llave == 0) {
+          this.obtenerVehiculos();
+          this.toastr.success(x.valor);
+        } else {
+          this.toastr.error(x.valor);
+        }
+      },
+      error: (err: any) => {
+        this.toastr.error('Error al obtener el documento');
+      },
+    });
   }
 
 

@@ -119,7 +119,8 @@
                         </option>
                         <option value="CAMION">Camion</option>
                         <option value="BUS">Bus</option>
-                        <option value="AUTOMOVIL">Automovil</option>
+                        <option value="CAMIONETA">Camioneta</option>
+                        <option value="BUSETA">Buseta</option>
                       </select>
                     </div>
                   </div>
@@ -566,6 +567,7 @@
                       ></i
                       >&nbsp;
                       <i
+                      (click)="deleteDriver(item.id)"
                         mat-raised-button
                         matTooltip="Eliminar conductor"
                         class="far fa-solid fa-delete-left text-danger"
